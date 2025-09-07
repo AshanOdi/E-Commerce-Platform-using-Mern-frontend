@@ -1,8 +1,8 @@
 export default function Header(props) {
   console.log(props);
   return (
-    <div>
-      <h1>Lunara Cosmetics</h1>
+    <div className="bg-red-500">
+      <h1 className="font-bold">Lunara Cosmetics</h1>
       <p>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. A vitae
         tenetur, magni non fugiat dicta, optio labore iste magnam molestiae
