@@ -1,11 +1,13 @@
 import "./App.css";
 import Header from "./components/header";
+import ProductCard from "./components/productCard";
 
 function App() {
   return (
     <>
-      <Header></Header>
-      <Header></Header>
+      <Header name="ashan" price="1000" description="yoyo" />
+
+      <ProductCard></ProductCard>
     </>
   );
 }
