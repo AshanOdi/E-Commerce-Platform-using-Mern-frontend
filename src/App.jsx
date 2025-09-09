@@ -10,12 +10,11 @@ function App() {
   return (
     <BrowserRouter>
       <div>
-        {/* <Header /> */}
         <Routes path="/*">
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin/*" element={<AdminPage />} />
           <Route path="/*" element={<h1>404 not Found</h1>} />
         </Routes>
       </div>

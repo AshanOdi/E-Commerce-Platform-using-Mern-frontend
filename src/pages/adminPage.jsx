@@ -1,8 +1,23 @@
+import { Link, Router, Route } from "react-router-dom";
+import HomePage from "./home";
+
 export default function AdminPage() {
   return (
-    <div className="w-full h-screen bg-red-900 flex flex-row">
-      <div className="w-[300px] h-screen bg-blue-900"></div>
-      <div className="h-full w-[calc(100%-300px)] bg-yellow-600"></div>
+    <div className="w-full h-screen flex flex-row">
+      <div className="w-[300px] h-screen bg-blue-300 flex flex-col">
+        <Link to="/admin/products">PRODUCT</Link>
+        <Link to="/admin/users">USER</Link>
+        <Link to="/admin/orders">ODERS</Link>
+        <Link to="/admin/reviews">REVIEW</Link>
+      </div>
+      <div className="h-full w-[calc(100%-300px)] bg-yellow-600">
+        <Router path="/*">
+          <Route path="/products" element={<h1>PRODUCT PAGE</h1>}></Route>
+          <Route path="/users" element={<h1>USER PAGE</h1>}></Route>
+          <Route path="/orders" element={<h1>ORDER PAGE</h1>}></Route>
+          <Route path="/reviews" element={<h1>REVIEW PAGE</h1>}></Route>
+        </Router>
+      </div>
     </div>
   );
 }
