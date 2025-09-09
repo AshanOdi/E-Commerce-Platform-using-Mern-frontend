@@ -1,4 +1,4 @@
-import { Link, Router, Route } from "react-router-dom";
+import { Link, Routes, Route } from "react-router-dom";
 import HomePage from "./home";
 
 export default function AdminPage() {
@@ -11,12 +11,13 @@ export default function AdminPage() {
         <Link to="/admin/reviews">REVIEW</Link>
       </div>
       <div className="h-full w-[calc(100%-300px)] bg-yellow-600">
-        <Router path="/*">
+        <Routes path="/*">
+          <Route path="/" element={<h1>FUCK YOU</h1>}></Route>
           <Route path="/products" element={<h1>PRODUCT PAGE</h1>}></Route>
           <Route path="/users" element={<h1>USER PAGE</h1>}></Route>
           <Route path="/orders" element={<h1>ORDER PAGE</h1>}></Route>
           <Route path="/reviews" element={<h1>REVIEW PAGE</h1>}></Route>
-        </Router>
+        </Routes>
       </div>
     </div>
   );

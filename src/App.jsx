@@ -5,6 +5,7 @@ import LoginPage from "./pages/login";
 import SignUpPage from "./pages/signup";
 import Header from "./components/header";
 import AdminPage from "./pages/adminPage";
+import TestPage from "./pages/testPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/admin/*" element={<AdminPage />} />
+          <Route path="/testing/*" element={<TestPage />} />
           <Route path="/*" element={<h1>404 not Found</h1>} />
         </Routes>
       </div>
