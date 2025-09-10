@@ -1,20 +1,55 @@
+import { useState } from "react";
+import axios from "axios";
+
 export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [pw, setPw] = useState("");
+
+  async function handleLogin() {
+    console.log(email);
+    console.log(pw);
+
+    try {
+      const response = await axios.post("http://localhost:5000/user/login", {
+        email: email,
+        password: pw,
+      });
+      alert("Login Successful");
+      // console.log(response);
+    } catch (e) {
+      console.log(e.response.data.message);
+    }
+  }
+
   return (
-    <div class="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg text-center">
-      <h1 class="text-4xl font-bold text-gray-800 mb-4">
-        Crystal Beauty Clear
-      </h1>
-      <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae
-        quibusdam corrupti tempore maxime sit voluptatum provident sequi
-        quisquam nobis optio voluptate delectus quae, facere sunt saepe earum
-        perferendis ipsa! Et exercitationem atque error delectus, doloribus
-        alias officiis quisquam perspiciatis vel velit, cum ducimus accusantium
-        amet optio laudantium neque, quaerat repudiandae.
-      </p>
-      <button class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
-        Login
-      </button>
+    <div className="w-full h-screen bg-[url('/loginpage.jpg')] bg-center bg-cover flex flex-row justify-center items-center">
+      <div className="w-[50%] h-full  "></div>
+      <div className="w-[500px] h-[650px] backdrop-blur-md flex flex-col justify-center items-center rounded-[20px] shadow-xl">
+        <input
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+          value={email}
+          type="email"
+          className="w-[400px] h-[50px] bg-[#c3efe9] my-3 rounded-[5px]"
+        />
+
+        <input
+          onChange={(e) => {
+            setPw(e.target.value);
+          }}
+          value={pw}
+          type="password"
+          className="w-[400px] h-[50px] bg-[#4e5c5a] my-3 rounded-[5px]"
+        />
+
+        <button
+          onClick={handleLogin}
+          className="w-[150px] h-[50px] cursor-pointer bg-[#d8d811] my-3 rounded-[5px]"
+        >
+          Submit
+        </button>
+      </div>
     </div>
   );
 }
