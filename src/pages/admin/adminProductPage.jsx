@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { sampleProduct } from "../../assets/sampleData";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function AdminProductPage() {
   const [products, setProducts] = useState(sampleProduct);
@@ -10,12 +11,12 @@ export default function AdminProductPage() {
       .get(import.meta.env.VITE_BACKEND_URL + "/api/product")
       .then((res) => {
         console.log(res.data);
-        setProducts[res.data];
+        setProducts(res.data);
       });
-  });
+  },[]);
 
   return (
-    <div className="w-full h-full bg-red-400 max-h-full overflow-y-scroll">
+    <div className="w-full h-full bg-red-400 max-h-full overflow-y-scroll relative">
       <table className="w-full text-center">
         <thead>
           <tr>
@@ -44,6 +45,12 @@ export default function AdminProductPage() {
           })}
         </tbody>
       </table>
+      <Link
+        to="/admin/add-product"
+        className="absolute bottom-5 right-5 cursor-pointer bg-green-500 text-xl text-white font-bold py-2 px-4 rounded"
+      >
+        +
+      </Link>
     </div>
   );
 }
