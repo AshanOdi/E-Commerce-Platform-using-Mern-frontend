@@ -1,8 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { sampleProduct } from "../../assets/sampleData";
+import axios from "axios";
 
 export default function AdminProductPage() {
   const [products, setProducts] = useState(sampleProduct);
+
+  useEffect(() => {
+    const response = axios
+      .get(import.meta.env.VITE_BACKEND_URL + "/api/product")
+      .then((res) => {
+        console.log(res.data);
+        setProducts[res.data];
+      });
+  });
 
   return (
     <div className="w-full h-full bg-red-400 max-h-full overflow-y-scroll">
@@ -20,7 +30,7 @@ export default function AdminProductPage() {
         <tbody>
           {products.map((item, index) => {
             return (
-              <tr>
+              <tr key={index}>
                 <td>{item.productId}</td>
                 <td>{item.name}</td>
                 <td>
