@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { sampleProduct } from "../../assets/sampleData";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 export default function AdminProductPage() {
   const [products, setProducts] = useState(sampleProduct);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const response = axios
@@ -26,6 +28,7 @@ export default function AdminProductPage() {
             <td>Labelled Price</td>
             <td>Price</td>
             <td>Stock</td>
+            <td>Actions</td>
           </tr>
         </thead>
         <tbody>
@@ -40,6 +43,9 @@ export default function AdminProductPage() {
                 <td>{item.labelledPrice}</td>
                 <td>{item.price}</td>
                 <td>{item.stock}</td>
+                <td> <div className="flex flex-row gap-2"><FaTrash  className="text-red-500 mx-2" cursor="pointer" /> <FaEdit onClick={()=>{
+                  navigate("/admin/edit-product")
+                }} className="text-blue-500" cursor="pointer" /></div> </td>
               </tr>
             );
           })}
