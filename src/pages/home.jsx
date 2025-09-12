@@ -1,20 +1,21 @@
+import Header from "../components/header";
+import {Routes , Route} from "react-router-dom";
+
 export default function HomePage() {
   return (
-    <div className="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg text-center">
-      <h1 className="text-4xl font-bold text-gray-800 mb-4">
-        Crystal Beauty Clear
-      </h1>
-      <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae
-        quibusdam corrupti tempore maxime sit voluptatum provident sequi
-        quisquam nobis optio voluptate delectus quae, facere sunt saepe earum
-        perferendis ipsa! Et exercitationem atque error delectus, doloribus
-        alias officiis quisquam perspiciatis vel velit, cum ducimus accusantium
-        amet optio laudantium neque, quaerat repudiandae.
-      </p>
-      <button className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
-        Home
-      </button>
+    <div className="w-full h-screen flex flex-col items-center">
+      <Header />
+      <div className="w-full max-h-[calc(100vh-80px)] flex flex-col items-center">
+        <Routes path="/*">
+          <Route path="/" element={<h1>Home Page</h1>} />
+          <Route path="/product" element={<h1>Product Page</h1>} />
+          <Route path="/about" element={<h1>About Page</h1>} />
+          <Route path="/contact" element={<h1>Contact Page</h1>} />
+          <Route path="/*" element={<h1>404 Not Found</h1>} />
+          
+        </Routes>
+      </div>
+
     </div>
   );
 }

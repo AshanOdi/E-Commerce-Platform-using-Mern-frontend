@@ -17,7 +17,7 @@ export default function AdminProductPage() {
       .then((res) => {
         console.log(res.data);
         setProducts(res.data);
-        // setIsLoading(false)
+        setIsLoading(false)
       });
     }
     
