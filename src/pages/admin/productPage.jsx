@@ -17,7 +17,7 @@ export default function AdminProductPage() {
       .then((res) => {
         console.log(res.data);
         setProducts(res.data);
-        setIsLoading(false)
+        // setIsLoading(false)
       });
     }
     
@@ -44,7 +44,10 @@ export default function AdminProductPage() {
 
   return (
     <div className="w-full h-full bg-red-400 max-h-full overflow-y-scroll relative">
-      {(!isLoading)?
+      {(isLoading)?
+      <div className="w-full h-full flex justify-center items-ceter">
+          <div className="w-[70px] h-[70px]  border-[5px] border-gray-500 border-t-blue-900 rounded-full animate-spin"></div>
+      </div>:
         <table className="w-full text-center">
         <thead>
           <tr>
@@ -81,7 +84,7 @@ export default function AdminProductPage() {
             );
           })}
         </tbody>
-      </table> : <h1>LOADING</h1>}
+      </table> }
       <Link
         to="/admin/add-product"
         className="absolute bottom-5 right-5 cursor-pointer bg-green-500 text-xl text-white font-bold py-2 px-4 rounded"
