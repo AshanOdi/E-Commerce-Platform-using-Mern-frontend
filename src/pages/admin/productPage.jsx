@@ -3,23 +3,49 @@ import { sampleProduct } from "../../assets/sampleData";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 export default function AdminProductPage() {
   const [products, setProducts] = useState(sampleProduct);
   const navigate = useNavigate();
+  const [isLoading,setIsLoading] = useState(true);
 
   useEffect(() => {
-    const response = axios
+    if(isLoading==true){
+      const response = axios
       .get(import.meta.env.VITE_BACKEND_URL + "/api/product")
       .then((res) => {
         console.log(res.data);
         setProducts(res.data);
+        setIsLoading(false)
       });
-  },[]);
+    }
+    
+  },[isLoading]);
+
+  function deleteProduct(productId){
+    const token = localStorage.getItem("token")
+    if(token==null){
+      toast.error("Please Login First")
+      return
+    }
+
+    axios.delete(import.meta.env.VITE_BACKEND_URL + "/api/product/"+productId , {
+      headers : {
+        "Authorization" : "Bearer "+token
+      }
+    }).then(()=>{
+      toast.success("Product Deleted Successfully")
+      setIsLoading(true)
+    }).catch((e)=>(
+      toast.error(e.response.data.message)))
+    
+  }
 
   return (
     <div className="w-full h-full bg-red-400 max-h-full overflow-y-scroll relative">
-      <table className="w-full text-center">
+      {(!isLoading)?
+        <table className="w-full text-center">
         <thead>
           <tr>
             <td>Product ID</td>
@@ -43,14 +69,19 @@ export default function AdminProductPage() {
                 <td>{item.labelledPrice}</td>
                 <td>{item.price}</td>
                 <td>{item.stock}</td>
-                <td> <div className="flex flex-row gap-2"><FaTrash  className="text-red-500 mx-2" cursor="pointer" /> <FaEdit onClick={()=>{
-                  navigate("/admin/edit-product")
+                <td> <div className="flex flex-row gap-2"><FaTrash  className="text-red-500 mx-2" cursor="pointer" onClick={()=>{
+                  deleteProduct(item.productId)
+                }} /> <FaEdit onClick={()=>{
+                  navigate("/admin/edit-product" , {
+                    state : item
+                  })
+                  
                 }} className="text-blue-500" cursor="pointer" /></div> </td>
               </tr>
             );
           })}
         </tbody>
-      </table>
+      </table> : <h1>LOADING</h1>}
       <Link
         to="/admin/add-product"
         className="absolute bottom-5 right-5 cursor-pointer bg-green-500 text-xl text-white font-bold py-2 px-4 rounded"

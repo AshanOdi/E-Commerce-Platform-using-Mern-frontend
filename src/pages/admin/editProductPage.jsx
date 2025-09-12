@@ -1,84 +1,80 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import mediaUpload from "../../utils/mediaUpload";
 import axios from "axios";
 
 export default function EditProductPage() {
-
-  const [productId, setProductId] = useState("");
-  const [name, setName] = useState("");
-  const [altNames, setAltNames] = useState([]);
-  const [description, setDescription] = useState("");
+  const location = useLocation() //json ekak denne  
+  const [productId, setProductId] = useState(location.state.productId);
+  const [name, setName] = useState(location.state.name);
+  const [altNames, setAltNames] = useState(location.state.altNames.join(","));
+  const [description, setDescription] = useState(location.state.description);
   const [images, setImages] = useState([]);
-  const [labelledPrice, setLabelledPrice] = useState(0);
-  const [price, setPrice] = useState(0);
-  const [stock, setStock] = useState(0);
+  const [labelledPrice, setLabelledPrice] = useState(location.state.labelledPrice);
+  const [price, setPrice] = useState(location.state.price);
+  const [stock, setStock] = useState(location.state.stock);
   const navigate = useNavigate()
 
-async function editProduct() {
+  
+  console.log(location)
 
+  
+
+  async function editProduct() {
     const token = localStorage.getItem("token");
-    if(!token){
-      toast.error("Please login to add a product");
+    if (!token) {
+      toast.error("Please login to update a product");
       return;
     }
-    
-    if(images.length <=0){
-      toast.error("Please add at least one image");
-      return;
-    }
-
-    // const promisesArray = images.map(image => mediaUpload(image));
-    const promisesArray = [];
-    for(let i = 0; i < images.length; i++){
-      promisesArray[i] = mediaUpload(images[i]);
-    }
+  
+    let imageUrls = location.state.images; // keep old images if none are uploaded
+  
     try {
-      const ImageUrls = await Promise.all(promisesArray)
-      console.log(ImageUrls);
-
+      if (images.length > 0) {
+        // upload new images
+        const promisesArray = images.map((img) => mediaUpload(img));
+        imageUrls = await Promise.all(promisesArray);
+      }
+  
+      console.log("Final image URLs:", imageUrls);
+  
       const altNamesArray = altNames.split(",");
-
+  
       const product = {
         productId,
         name,
         altNames: altNamesArray,
         description,
-        images: ImageUrls,
+        images: imageUrls,
         labelledPrice,
         price,
         stock,
       };
-
-      axios.post(import.meta.env.VITE_BACKEND_URL + "/api/product", product, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }).then((res) => {
-        toast.success("Product added successfully");
-        console.log(res.data);
-        navigate("/admin/products")
-
-      }).catch((err) => {
-        toast.error("Error adding product");
-        console.log(err);
-      });
-      
+  
+      await axios.put(
+        import.meta.env.VITE_BACKEND_URL + "/api/product/" + productId,
+        product,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+  
+      toast.success("Product updated successfully");
+      navigate("/admin/products");
     } catch (error) {
-      toast.error("Error uploading images");
-      return;
+      console.error("Error in editProduct:", error);
+      toast.error("Error updating product");
     }
-    
-
-
-
   }
+  
 
 
   return <div className="w-full h-full flex flex-col items-center justify-center ">
     <h1>Edit Product Page</h1>
-    <input type="text" placeholder="Product ID" value={productId} onChange={(e) => setProductId(e.target.value)} />
+    <input type="text" disabled placeholder="Product ID" value={productId} onChange={(e) => setProductId(e.target.value)} />
     <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
     <input type="text" placeholder="Alt Names" value={altNames} onChange={(e) => setAltNames(e.target.value)} />
     <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
