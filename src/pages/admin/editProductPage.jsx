@@ -6,6 +6,8 @@ import axios from "axios";
 
 export default function EditProductPage() {
   const location = useLocation() //json ekak denne  
+
+  
   const [productId, setProductId] = useState(location.state.productId);
   const [name, setName] = useState(location.state.name);
   const [altNames, setAltNames] = useState(location.state.altNames.join(","));
