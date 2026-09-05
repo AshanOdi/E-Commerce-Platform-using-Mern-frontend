@@ -18,6 +18,7 @@ export default function Header() {
         <Link to="/product" className=" text-[20px] font-boold mx-2">Products</Link>
         <Link to="/about" className=" text-[20px] font-boold mx-2">About</Link>
         <Link to="/contact" className=" text-[20px] font-boold mx-2">Contact</Link>
+        <Link to="/my-orders" className=" text-[20px] font-boold mx-2">My Orders</Link>
 
       </div>
       <Link

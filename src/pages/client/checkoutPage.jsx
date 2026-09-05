@@ -104,9 +104,14 @@ export default function CheckoutPage() {
         <p className="text-xl font-bold text-gray-800">
           Total: ${confirmedOrder.total.toFixed(2)}
         </p>
-        <Link to="/product" className="text-blue-600 hover:underline mt-2">
-          Continue shopping
-        </Link>
+        <div className="flex gap-4 mt-2">
+          <Link to={"/my-orders/" + confirmedOrder.orderId} className="text-blue-600 hover:underline">
+            View order
+          </Link>
+          <Link to="/product" className="text-blue-600 hover:underline">
+            Continue shopping
+          </Link>
+        </div>
       </div>
     );
   }
