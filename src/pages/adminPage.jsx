@@ -3,6 +3,8 @@ import HomePage from "./home";
 import AdminProductPage from "./admin/productPage";
 import AddProductPage from "./admin/addProductPage";
 import EditProductPage from "./admin/editProductPage";
+import AdminOrdersPage from "./admin/orderPage";
+import AdminOrderDetailPage from "./admin/orderDetailPage";
 
 export default function AdminPage() {
   return (
@@ -10,7 +12,7 @@ export default function AdminPage() {
       <div className="w-[300px] h-screen bg-blue-300 flex flex-col">
         <Link to="/admin/products">PRODUCT</Link>
         <Link to="/admin/users">USER</Link>
-        <Link to="/admin/orders">ODERS</Link>
+        <Link to="/admin/orders">ORDERS</Link>
         <Link to="/admin/reviews">REVIEW</Link>
       </div>
       <div className="h-full w-[calc(100%-300px)] bg-yellow-600">
@@ -18,7 +20,8 @@ export default function AdminPage() {
           <Route path="/" element={<h1>FUCK YOU</h1>}></Route>
           <Route path="/products" element={<AdminProductPage />}></Route>
           <Route path="/users" element={<h1>USER PAGE</h1>}></Route>
-          <Route path="/orders" element={<h1>ORDER PAGE</h1>}></Route>
+          <Route path="/orders" element={<AdminOrdersPage />}></Route>
+          <Route path="/orders/:orderId" element={<AdminOrderDetailPage />}></Route>
           <Route path="/reviews" element={<h1>REVIEW PAGE</h1>}></Route>
           <Route path="/add-product" element={<AddProductPage />} />
           <Route path="/edit-product" element={<EditProductPage />} />
