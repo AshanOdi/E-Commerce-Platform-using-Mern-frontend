@@ -12,15 +12,16 @@ export default function AdminProductPage() {
 
   useEffect(() => {
     if(isLoading==true){
-      const response = axios
-      .get(import.meta.env.VITE_BACKEND_URL + "/api/product")
+      // getProduct is paginated now (Phase 9). The admin table shows the
+      // whole catalog, so ask for a large page and read the products array.
+      axios
+      .get(import.meta.env.VITE_BACKEND_URL + "/api/product?limit=200")
       .then((res) => {
-        console.log(res.data);
-        setProducts(res.data);
+        setProducts(res.data.products);
         setIsLoading(false)
       });
     }
-    
+
   },[isLoading]);
 
   function deleteProduct(productId){
