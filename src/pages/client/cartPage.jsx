@@ -1,12 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useCart } from "../../context/CartContext";
 
 export default function CartPage() {
+  const navigate = useNavigate();
   const { cartItems, cartItemCount, cartTotal, removeFromCart, updateQuantity } = useCart();
 
   function handleCheckout() {
-    toast("🚧 Checkout is coming in the next phase!");
+    navigate("/checkout");
   }
 
   if (cartItems.length === 0) {
