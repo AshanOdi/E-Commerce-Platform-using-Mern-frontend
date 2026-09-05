@@ -1,6 +1,13 @@
+import { useNavigate } from "react-router-dom";
+
 export default function ProductCard({ product }) {
+  const navigate = useNavigate();
+
   return (
-    <div className="w-[300px] h-[400px] bg-white rounded-2xl shadow-lg m-3 flex flex-col overflow-hidden hover:shadow-xl transition-shadow duration-300">
+    <div
+      onClick={() => navigate("/product/" + product.productId)}
+      className="w-[300px] h-[400px] bg-white rounded-2xl shadow-lg m-3 flex flex-col overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+    >
       {/* Product Image */}
       <div className="h-1/2 w-full overflow-hidden flex items-center justify-center bg-gray-100">
         {product.images && product.images.length > 0 ? (
@@ -50,6 +57,7 @@ export default function ProductCard({ product }) {
 
         {/* Action Button */}
         <button
+          onClick={(e) => e.stopPropagation()}
           disabled={!product.isAvailable}
           className={`mt-4 w-full py-2 rounded-lg text-white font-medium transition-colors ${
             product.isAvailable
