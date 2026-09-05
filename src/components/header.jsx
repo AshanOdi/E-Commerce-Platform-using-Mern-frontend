@@ -1,11 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function Header() {
 
   const navigate = useNavigate()
   const { cartItemCount } = useCart();
+  const { isAuthenticated, user, logout } = useAuth();
 
   return (
     <div className="w-full h-[80px] shadow-2xl flex" >
@@ -18,7 +20,21 @@ export default function Header() {
         <Link to="/product" className=" text-[20px] font-boold mx-2">Products</Link>
         <Link to="/about" className=" text-[20px] font-boold mx-2">About</Link>
         <Link to="/contact" className=" text-[20px] font-boold mx-2">Contact</Link>
-        <Link to="/my-orders" className=" text-[20px] font-boold mx-2">My Orders</Link>
+
+        {isAuthenticated ? (
+          <>
+            <Link to="/my-orders" className=" text-[20px] font-boold mx-2">My Orders</Link>
+            <span className="text-[16px] text-gray-500 mx-2">Hi, {user.firstName}</span>
+            <button
+              onClick={logout}
+              className="text-[20px] font-boold mx-2 cursor-pointer text-red-600"
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <Link to="/login" className=" text-[20px] font-boold mx-2">Login</Link>
+        )}
 
       </div>
       <Link

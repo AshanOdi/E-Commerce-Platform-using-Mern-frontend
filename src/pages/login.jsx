@@ -2,17 +2,16 @@ import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
 
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   async function handleLogin() {
-    console.log(email);
-    console.log(pw);
-
     try {
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/api/user/login",
@@ -22,19 +21,17 @@ export default function LoginPage() {
         }
       );
       toast.success("Login Successful");
-      console.log(response.data);
-      localStorage.setItem("token", response.data.token);
-      // const token = localStorage.getItem("token");
+      login(response.data.token); // updates AuthContext's user state immediately
 
+      // Role-based redirect: send admins to the admin dashboard, everyone
+      // else to the storefront.
       if (response.data.role === "admin") {
-        // window.location.href = "/admin";
         navigate("/admin");
       } else {
-        // window.location.href = "/";
         navigate("/");
       }
     } catch (e) {
-      console.log(e.response.data.message);
+      toast.error(e.response?.data?.message || "Login failed");
     }
   }
 

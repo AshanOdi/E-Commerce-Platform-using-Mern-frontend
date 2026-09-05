@@ -1,30 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useCart } from "../../context/CartContext";
-
-// Reads the (unverified, client-side-only) JWT payload just to prefill the
-// form. This is display convenience only — the server independently
-// verifies the real token on every request; nothing here is trusted as auth.
-function decodeTokenPayload(token) {
-  try {
-    // JWTs are base64URL (-/_ , no padding), not plain base64 (+//).
-    // atob() expects plain base64, so it must be converted first or it
-    // throws (or silently mis-decodes) on many real tokens.
-    const base64url = token.split(".")[1];
-    const base64 = base64url.replace(/-/g, "+").replace(/_/g, "/");
-    const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
-    return JSON.parse(atob(padded));
-  } catch {
-    return null;
-  }
-}
+import { useAuth } from "../../context/AuthContext";
 
 // "form" | "submitting" | "success" | "error"
 export default function CheckoutPage() {
-  const navigate = useNavigate();
   const { cartItems, cartTotal, clearCart } = useCart();
+  const { user } = useAuth(); // route is wrapped in <RequireAuth> — user is guaranteed here
 
   const [status, setStatus] = useState("form");
   const [errorMessage, setErrorMessage] = useState("");
@@ -36,18 +20,11 @@ export default function CheckoutPage() {
   const [address, setAddress] = useState("");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("Please log in to checkout");
-      navigate("/login");
-      return;
+    if (user) {
+      setName(((user.firstName || "") + " " + (user.lastName || "")).trim());
+      setEmail(user.email || "");
     }
-    const payload = decodeTokenPayload(token);
-    if (payload) {
-      setName(((payload.firstName || "") + " " + (payload.lastName || "")).trim());
-      setEmail(payload.email || "");
-    }
-  }, [navigate]);
+  }, [user]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -58,12 +35,6 @@ export default function CheckoutPage() {
     }
 
     const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("Please log in to checkout");
-      navigate("/login");
-      return;
-    }
-
     setStatus("submitting");
 
     try {

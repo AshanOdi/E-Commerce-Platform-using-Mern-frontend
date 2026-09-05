@@ -1,22 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import toast from "react-hot-toast";
+import { useParams, Link } from "react-router-dom";
 
 // "loading" | "success" | "not-found" | "error"
 export default function OrderDetailPage() {
   const { orderId } = useParams(); // URL is the source of truth, same principle as ProductDetailPage
-  const navigate = useNavigate();
+  // Route is wrapped in <RequireAuth> (see home.jsx) — no need to re-check
+  // for a token here, that guard already ran before this component mounted.
   const [order, setOrder] = useState(null);
   const [status, setStatus] = useState("loading");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("Please log in to view your orders");
-      navigate("/login");
-      return;
-    }
 
     setStatus("loading");
     axios
@@ -34,7 +29,7 @@ export default function OrderDetailPage() {
           setStatus("error");
         }
       });
-  }, [orderId, navigate]);
+  }, [orderId]);
 
   if (status === "loading") {
     return (

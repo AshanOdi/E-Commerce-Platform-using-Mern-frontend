@@ -8,22 +8,29 @@ import TestPage from "./pages/testPage";
 import { Toaster } from "react-hot-toast";
 import RegisterPage from "./pages/register";
 import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext";
+import { RequireAdmin } from "./components/ProtectedRoute";
 
 function App() {
   return (
     <CartProvider>
     <BrowserRouter>
+      {/* AuthProvider needs useNavigate() (for logout / expired-session
+          redirects), so it must live INSIDE BrowserRouter — unlike
+          CartProvider above, which doesn't need router access. */}
+      <AuthProvider>
       <div>
         <Toaster position="top-right" />
         <Routes path="/*">
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/admin/*" element={<AdminPage />} />
+          <Route path="/admin/*" element={<RequireAdmin><AdminPage /></RequireAdmin>} />
           <Route path="/testing/*" element={<TestPage />} />
           <Route path="/*" element={<HomePage/>} />
         </Routes>
       </div>
+      </AuthProvider>
 
       <div>
         {/* <div className="relative w-[600px] h-[600px]  bg-green-500 flex flex-col items-center justify-center">

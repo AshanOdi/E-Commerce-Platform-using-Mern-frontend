@@ -1,21 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 // "loading" | "success" | "error"
 export default function MyOrdersPage() {
-  const navigate = useNavigate();
+  // Route is wrapped in <RequireAuth> (see home.jsx) — no need to re-check
+  // for a token here, that guard already ran before this component mounted.
   const [orders, setOrders] = useState([]);
   const [status, setStatus] = useState("loading");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("Please log in to view your orders");
-      navigate("/login");
-      return;
-    }
 
     axios
       .get(import.meta.env.VITE_BACKEND_URL + "/api/order", {
@@ -29,7 +24,7 @@ export default function MyOrdersPage() {
         // Never show the raw axios/network error to the customer.
         setStatus("error");
       });
-  }, [navigate]);
+  }, []);
 
   if (status === "loading") {
     return (
