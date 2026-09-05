@@ -1,7 +1,16 @@
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useCart } from "../context/CartContext";
 
 export default function ProductCard({ product }) {
   const navigate = useNavigate();
+  const { addToCart } = useCart();
+
+  function handleAddToCart(e) {
+    e.stopPropagation(); // don't also trigger the card's own navigate()
+    addToCart(product, 1);
+    toast.success(`${product.name} added to cart`);
+  }
 
   return (
     <div
@@ -57,7 +66,7 @@ export default function ProductCard({ product }) {
 
         {/* Action Button */}
         <button
-          onClick={(e) => e.stopPropagation()}
+          onClick={handleAddToCart}
           disabled={!product.isAvailable}
           className={`mt-4 w-full py-2 rounded-lg text-white font-medium transition-colors ${
             product.isAvailable

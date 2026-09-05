@@ -7,9 +7,11 @@ import AdminPage from "./pages/adminPage";
 import TestPage from "./pages/testPage";
 import { Toaster } from "react-hot-toast";
 import RegisterPage from "./pages/register";
+import { CartProvider } from "./context/CartContext";
 
 function App() {
   return (
+    <CartProvider>
     <BrowserRouter>
       <div>
         <Toaster position="top-right" />
@@ -33,6 +35,7 @@ function App() {
       </div> */}
       </div>
     </BrowserRouter>
+    </CartProvider>
   );
 }
 

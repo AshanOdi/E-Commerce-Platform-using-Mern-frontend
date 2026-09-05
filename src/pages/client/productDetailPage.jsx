@@ -2,10 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useCart } from "../../context/CartContext";
 
 // "loading" | "success" | "not-found" | "error"
 export default function ProductDetailPage() {
   const { productId } = useParams(); // URL is the source of truth, not router state
+  const { addToCart } = useCart();
   const [product, setProduct] = useState(null);
   const [status, setStatus] = useState("loading");
   const [activeImage, setActiveImage] = useState(0);
@@ -78,7 +80,8 @@ export default function ProductDetailPage() {
   }
 
   function handleAddToCart() {
-    toast("🛒 Cart is coming in the next phase!");
+    addToCart(product, quantity);
+    toast.success(`${product.name} added to cart`);
   }
 
   return (
