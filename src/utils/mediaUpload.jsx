@@ -6,10 +6,23 @@ const key =
 
 const supabase = createClient(url, key);
 
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+
 export default function mediaUpload(file) {
   const mediaUploadPromise = new Promise((resolve, reject) => {
     if (file == null) {
       reject("No file detected");
+      return;
+    }
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      reject("Only JPEG, PNG, WEBP or GIF images are allowed");
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      reject("Image must be smaller than 5MB");
       return;
     }
 

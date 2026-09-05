@@ -31,7 +31,12 @@ export default function EditProductPage() {
     }
   
     let imageUrls = location.state.images; // keep old images if none are uploaded
-  
+
+    if (images.length > 5) {
+      toast.error("You can upload a maximum of 5 images");
+      return;
+    }
+
     try {
       if (images.length > 0) {
         // upload new images

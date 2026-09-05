@@ -29,6 +29,11 @@ async function AddProduct() {
       return;
     }
 
+    if(images.length > 5){
+      toast.error("You can upload a maximum of 5 images");
+      return;
+    }
+
     // const promisesArray = images.map(image => mediaUpload(image));
     const promisesArray = [];
     for(let i = 0; i < images.length; i++){
