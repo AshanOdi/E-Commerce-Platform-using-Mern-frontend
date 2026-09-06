@@ -101,13 +101,30 @@ export default function AdminOrderDetailPage() {
             <h1 className="text-xl font-bold text-gray-800 font-mono">{order.orderId}</h1>
             <p className="text-sm text-gray-500">{new Date(order.date).toLocaleString()}</p>
           </div>
-          <span
-            className={`px-3 py-1 rounded-full text-sm font-medium capitalize ${statusBadgeClass(
-              order.status
-            )}`}
-          >
-            {order.status}
-          </span>
+          <div className="flex gap-2">
+            <span
+              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                order.paymentStatus === "paid"
+                  ? "bg-green-100 text-green-700"
+                  : order.paymentStatus === "failed"
+                  ? "bg-red-100 text-red-700"
+                  : "bg-yellow-100 text-yellow-700"
+              }`}
+            >
+              {order.paymentStatus === "paid"
+                ? "Paid"
+                : order.paymentStatus === "failed"
+                ? "Payment failed"
+                : "Unpaid"}
+            </span>
+            <span
+              className={`px-3 py-1 rounded-full text-sm font-medium capitalize ${statusBadgeClass(
+                order.status
+              )}`}
+            >
+              {order.status}
+            </span>
+          </div>
         </div>
 
         <div className="mt-4 text-sm text-gray-600">

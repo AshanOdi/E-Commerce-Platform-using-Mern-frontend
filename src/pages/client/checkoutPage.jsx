@@ -1,18 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 
-// "form" | "submitting" | "success" | "error"
+// "form" | "submitting" | "error"
 export default function CheckoutPage() {
+  const navigate = useNavigate();
   const { cartItems, cartTotal, clearCart } = useCart();
   const { user } = useAuth(); // route is wrapped in <RequireAuth> — user is guaranteed here
 
   const [status, setStatus] = useState("form");
   const [errorMessage, setErrorMessage] = useState("");
-  const [confirmedOrder, setConfirmedOrder] = useState(null);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -35,10 +35,12 @@ export default function CheckoutPage() {
     }
 
     const token = localStorage.getItem("token");
+    const authHeader = { headers: { Authorization: "Bearer " + token } };
     setStatus("submitting");
 
     try {
-      const response = await axios.post(
+      // 1. Create the order (status pending, paymentStatus unpaid).
+      const orderRes = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/api/order",
         {
           name,
@@ -52,39 +54,28 @@ export default function CheckoutPage() {
             Qty: item.quantity,
           })),
         },
-        { headers: { Authorization: "Bearer " + token } }
+        authHeader
       );
-
-      setConfirmedOrder(response.data.order);
+      const orderId = orderRes.data.order.orderId;
       clearCart();
-      setStatus("success");
+
+      // 2. Start payment for it and hand off to the pay page. The order is
+      // NOT considered paid until the payment webhook says so.
+      try {
+        const intentRes = await axios.post(
+          import.meta.env.VITE_BACKEND_URL + "/api/payment/intent",
+          { orderId },
+          authHeader
+        );
+        navigate("/pay/" + intentRes.data.intentId);
+      } catch {
+        toast.error("Order created, but payment couldn't be started. You can pay from My Orders.");
+        navigate("/my-orders/" + orderId);
+      }
     } catch (err) {
       setErrorMessage(err.response?.data?.message || "Something went wrong placing your order.");
       setStatus("error");
     }
-  }
-
-  if (status === "success" && confirmedOrder) {
-    return (
-      <div className="w-full h-full flex flex-col justify-center items-center gap-3 text-center px-4">
-        <h1 className="text-2xl font-semibold text-gray-800">Order placed!</h1>
-        <p className="text-gray-600">
-          Order <span className="font-mono font-semibold">{confirmedOrder.orderId}</span> has
-          been created.
-        </p>
-        <p className="text-xl font-bold text-gray-800">
-          Total: ${confirmedOrder.total.toFixed(2)}
-        </p>
-        <div className="flex gap-4 mt-2">
-          <Link to={"/my-orders/" + confirmedOrder.orderId} className="text-blue-600 hover:underline">
-            View order
-          </Link>
-          <Link to="/product" className="text-blue-600 hover:underline">
-            Continue shopping
-          </Link>
-        </div>
-      </div>
-    );
   }
 
   if (cartItems.length === 0 && status === "form") {
@@ -151,7 +142,7 @@ export default function CheckoutPage() {
           disabled={status === "submitting"}
           className="mt-2 w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-3 rounded-lg transition-colors"
         >
-          {status === "submitting" ? "Placing order..." : "Place Order"}
+          {status === "submitting" ? "Processing…" : "Continue to Payment"}
         </button>
       </form>
 
