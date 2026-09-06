@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useCart } from "../../context/CartContext";
+import ProductReviews from "../../components/productReviews";
 
 // "loading" | "success" | "not-found" | "error"
 export default function ProductDetailPage() {
@@ -85,7 +86,8 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <div className="w-full max-w-5xl px-4 py-8 flex flex-col md:flex-row gap-10">
+    <div className="w-full max-w-5xl px-4 py-8">
+      <div className="flex flex-col md:flex-row gap-10">
       {/* Image gallery */}
       <div className="w-full md:w-1/2 flex flex-col items-center">
         <div className="w-full aspect-square bg-gray-100 rounded-2xl overflow-hidden flex items-center justify-center">
@@ -172,6 +174,9 @@ export default function ProductDetailPage() {
           {product.isAvailable ? "Add to Cart" : "Unavailable"}
         </button>
       </div>
+      </div>
+
+      <ProductReviews productId={product.productId} />
     </div>
   );
 }
