@@ -2,13 +2,18 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
+import { useWishlist } from "../../context/WishlistContext";
 import ProductReviews from "../../components/productReviews";
 
 // "loading" | "success" | "not-found" | "error"
 export default function ProductDetailPage() {
   const { productId } = useParams(); // URL is the source of truth, not router state
   const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
+  const { isWishlisted, toggleWishlist } = useWishlist();
   const [product, setProduct] = useState(null);
   const [status, setStatus] = useState("loading");
   const [activeImage, setActiveImage] = useState(0);
@@ -85,6 +90,14 @@ export default function ProductDetailPage() {
     toast.success(`${product.name} added to cart`);
   }
 
+  function handleToggleWishlist() {
+    if (!isAuthenticated) {
+      toast.error("Please log in to save items to your wishlist");
+      return;
+    }
+    toggleWishlist(product.productId).catch(() => toast.error("Could not update wishlist"));
+  }
+
   return (
     <div className="w-full max-w-5xl px-4 py-8">
       <div className="flex flex-col md:flex-row gap-10">
@@ -121,7 +134,20 @@ export default function ProductDetailPage() {
 
       {/* Details */}
       <div className="w-full md:w-1/2 flex flex-col">
-        <h1 className="text-2xl font-bold text-gray-800">{product.name}</h1>
+        <div className="flex items-start justify-between gap-4">
+          <h1 className="text-2xl font-bold text-gray-800">{product.name}</h1>
+          <button
+            onClick={handleToggleWishlist}
+            aria-label={isWishlisted(product.productId) ? "Remove from wishlist" : "Add to wishlist"}
+            className="w-10 h-10 flex-shrink-0 rounded-full bg-gray-100 shadow flex items-center justify-center hover:scale-110 transition-transform"
+          >
+            {isWishlisted(product.productId) ? (
+              <FaHeart className="text-red-500" size={18} />
+            ) : (
+              <FaRegHeart className="text-gray-500" size={18} />
+            )}
+          </button>
+        </div>
         {product.altNames && product.altNames.length > 0 && (
           <p className="text-sm text-gray-400 mt-1">{product.altNames.join(", ")}</p>
         )}

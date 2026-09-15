@@ -2,12 +2,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { useWishlist } from "../context/WishlistContext";
 
 export default function Header() {
 
   const navigate = useNavigate()
   const { cartItemCount } = useCart();
   const { isAuthenticated, user, logout } = useAuth();
+  const { products: wishlistProducts } = useWishlist();
 
   return (
     <div className="w-full h-[80px] shadow-2xl flex" >
@@ -24,6 +26,9 @@ export default function Header() {
         {isAuthenticated ? (
           <>
             <Link to="/my-orders" className=" text-[20px] font-boold mx-2">My Orders</Link>
+            <Link to="/wishlist" className=" text-[20px] font-boold mx-2">
+              Wishlist{wishlistProducts.length > 0 ? ` (${wishlistProducts.length})` : ""}
+            </Link>
             <Link to="/profile" className="text-[16px] text-gray-500 mx-2 hover:underline">
               Hi, {user.firstName}
             </Link>

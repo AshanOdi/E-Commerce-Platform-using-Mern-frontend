@@ -11,6 +11,7 @@ import LandingPage from "./client/landingPage";
 import AboutPage from "./client/aboutPage";
 import ContactPage from "./client/contactPage";
 import ProfilePage from "./client/profilePage";
+import WishlistPage from "./client/wishlistPage";
 import { RequireAuth } from "../components/ProtectedRoute";
 
 export default function HomePage() {
@@ -27,6 +28,7 @@ export default function HomePage() {
           <Route path="/checkout" element={<RequireAuth><CheckoutPage/></RequireAuth>} />
           <Route path="/pay/:intentId" element={<RequireAuth><PayPage/></RequireAuth>} />
           <Route path="/profile" element={<RequireAuth><ProfilePage/></RequireAuth>} />
+          <Route path="/wishlist" element={<RequireAuth><WishlistPage/></RequireAuth>} />
           <Route path="/my-orders" element={<RequireAuth><MyOrdersPage/></RequireAuth>} />
           <Route path="/my-orders/:orderId" element={<RequireAuth><OrderDetailPage/></RequireAuth>} />
           <Route path="/about" element={<AboutPage/>} />

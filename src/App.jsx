@@ -9,6 +9,7 @@ import { Toaster } from "react-hot-toast";
 import RegisterPage from "./pages/register";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
+import { WishlistProvider } from "./context/WishlistContext";
 import { RequireAdmin } from "./components/ProtectedRoute";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           redirects), so it must live INSIDE BrowserRouter — unlike
           CartProvider above, which doesn't need router access. */}
       <AuthProvider>
+      <WishlistProvider>
       <div>
         <Toaster position="top-right" />
         <Routes path="/*">
@@ -30,6 +32,7 @@ function App() {
           <Route path="/*" element={<HomePage/>} />
         </Routes>
       </div>
+      </WishlistProvider>
       </AuthProvider>
 
       <div>

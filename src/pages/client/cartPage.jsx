@@ -1,10 +1,28 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useCart } from "../../context/CartContext";
 
 export default function CartPage() {
   const navigate = useNavigate();
-  const { cartItems, cartItemCount, cartTotal, removeFromCart, updateQuantity } = useCart();
+  const {
+    cartItems,
+    cartItemCount,
+    cartTotal,
+    hasUnavailableItems,
+    removeFromCart,
+    updateQuantity,
+    refreshCart,
+  } = useCart();
+  const [checkingAvailability, setCheckingAvailability] = useState(true);
+
+  // Re-validate every line item against the live catalog as soon as the
+  // cart is opened — cartItems is a localStorage snapshot that can go
+  // stale (price/stock/availability changes) between visits.
+  useEffect(() => {
+    refreshCart().finally(() => setCheckingAvailability(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function handleCheckout() {
     navigate("/checkout");
@@ -24,10 +42,45 @@ export default function CartPage() {
 
   return (
     <div className="w-full max-w-4xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Your Cart</h1>
+      <h1 className="text-2xl font-bold text-gray-800 mb-2">Your Cart</h1>
+      {checkingAvailability && (
+        <p className="text-sm text-gray-400 mb-4">Checking availability…</p>
+      )}
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 mt-4">
         {cartItems.map((item) => {
+          if (item.unavailable) {
+            return (
+              <div
+                key={item.productId}
+                className="flex items-center gap-4 bg-gray-50 rounded-2xl shadow-md p-4 opacity-70"
+              >
+                <div className="w-20 h-20 bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0">
+                  {item.image ? (
+                    <img src={item.image} alt={item.name} className="object-cover w-full h-full grayscale" />
+                  ) : (
+                    <span className="text-gray-400 text-xs">No Image</span>
+                  )}
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <h2 className="font-semibold text-gray-600 truncate">{item.name}</h2>
+                  <p className="text-sm text-red-600 font-medium">No longer available</p>
+                </div>
+
+                <button
+                  onClick={() => {
+                    removeFromCart(item.productId);
+                    toast.success(`${item.name} removed from cart`);
+                  }}
+                  className="text-red-500 hover:text-red-700 text-sm font-medium"
+                >
+                  Remove
+                </button>
+              </div>
+            );
+          }
+
           const lineTotal = item.price * item.quantity;
           return (
             <div
@@ -92,6 +145,9 @@ export default function CartPage() {
       <div className="mt-8 bg-white rounded-2xl shadow-md p-6 flex flex-col items-end gap-2">
         <p className="text-gray-500">{cartItemCount} item{cartItemCount !== 1 ? "s" : ""} in cart</p>
         <p className="text-2xl font-bold text-gray-800">Subtotal: ${cartTotal.toFixed(2)}</p>
+        {hasUnavailableItems && (
+          <p className="text-sm text-red-600">Remove unavailable items to continue to checkout</p>
+        )}
 
         <div className="flex gap-4 mt-2">
           <Link
@@ -102,7 +158,8 @@ export default function CartPage() {
           </Link>
           <button
             onClick={handleCheckout}
-            className="px-6 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700"
+            disabled={hasUnavailableItems}
+            className="px-6 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             Proceed to Checkout
           </button>

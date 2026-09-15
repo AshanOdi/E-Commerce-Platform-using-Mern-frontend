@@ -1,10 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
+import { useWishlist } from "../context/WishlistContext";
 
 export default function ProductCard({ product }) {
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
+  const { isWishlisted, toggleWishlist } = useWishlist();
+  const wishlisted = isWishlisted(product.productId);
 
   function handleAddToCart(e) {
     e.stopPropagation(); // don't also trigger the card's own navigate()
@@ -12,11 +18,32 @@ export default function ProductCard({ product }) {
     toast.success(`${product.name} added to cart`);
   }
 
+  function handleToggleWishlist(e) {
+    e.stopPropagation();
+    if (!isAuthenticated) {
+      toast.error("Please log in to save items to your wishlist");
+      return;
+    }
+    toggleWishlist(product.productId).catch(() => toast.error("Could not update wishlist"));
+  }
+
   return (
     <div
       onClick={() => navigate("/product/" + product.productId)}
-      className="w-[300px] h-[400px] bg-white rounded-2xl shadow-lg m-3 flex flex-col overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+      className="w-[300px] h-[400px] bg-white rounded-2xl shadow-lg m-3 flex flex-col overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer relative"
     >
+      <button
+        onClick={handleToggleWishlist}
+        aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+        className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/90 shadow flex items-center justify-center hover:scale-110 transition-transform"
+      >
+        {wishlisted ? (
+          <FaHeart className="text-red-500" size={16} />
+        ) : (
+          <FaRegHeart className="text-gray-500" size={16} />
+        )}
+      </button>
+
       {/* Product Image */}
       <div className="h-1/2 w-full overflow-hidden flex items-center justify-center bg-gray-100">
         {product.images && product.images.length > 0 ? (

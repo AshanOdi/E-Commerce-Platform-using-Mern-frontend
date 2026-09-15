@@ -8,11 +8,19 @@ import { useAuth } from "../../context/AuthContext";
 // "form" | "submitting" | "error"
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  const { cartItems, cartTotal, clearCart } = useCart();
+  const { cartItems, cartTotal, hasUnavailableItems, clearCart, refreshCart } = useCart();
   const { user } = useAuth(); // route is wrapped in <RequireAuth> — user is guaranteed here
 
   const [status, setStatus] = useState("form");
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Safety net: Cart already blocks navigating here with unavailable items,
+  // but a customer could still land on /checkout directly (back button,
+  // bookmarked URL) with a cart that's gone stale since it was last checked.
+  useEffect(() => {
+    refreshCart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,6 +39,11 @@ export default function CheckoutPage() {
 
     if (!name.trim() || !phone.trim() || !address.trim()) {
       toast.error("Please fill in all fields");
+      return;
+    }
+    if (hasUnavailableItems) {
+      toast.error("Some items in your cart are no longer available. Please remove them first.");
+      navigate("/cart");
       return;
     }
 
