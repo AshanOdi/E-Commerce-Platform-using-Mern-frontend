@@ -10,6 +10,7 @@ import PayPage from "./client/payPage";
 import LandingPage from "./client/landingPage";
 import AboutPage from "./client/aboutPage";
 import ContactPage from "./client/contactPage";
+import ConciergePage from "./client/conciergePage";
 import ProfilePage from "./client/profilePage";
 import WishlistPage from "./client/wishlistPage";
 import { RequireAuth } from "../components/ProtectedRoute";
@@ -33,6 +34,7 @@ export default function HomePage() {
           <Route path="/my-orders/:orderId" element={<RequireAuth><OrderDetailPage/></RequireAuth>} />
           <Route path="/about" element={<AboutPage/>} />
           <Route path="/contact" element={<ContactPage/>} />
+          <Route path="/concierge" element={<ConciergePage/>} />
           <Route path="/*" element={<h1>404 Not Found</h1>} />
           
         </Routes>
