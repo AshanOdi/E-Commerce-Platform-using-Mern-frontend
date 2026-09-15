@@ -24,7 +24,9 @@ export default function Header() {
         {isAuthenticated ? (
           <>
             <Link to="/my-orders" className=" text-[20px] font-boold mx-2">My Orders</Link>
-            <span className="text-[16px] text-gray-500 mx-2">Hi, {user.firstName}</span>
+            <Link to="/profile" className="text-[16px] text-gray-500 mx-2 hover:underline">
+              Hi, {user.firstName}
+            </Link>
             <button
               onClick={logout}
               className="text-[20px] font-boold mx-2 cursor-pointer text-red-600"
