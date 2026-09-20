@@ -19,7 +19,7 @@ export default function RegisterPage() {
     }
 
     try {
-      const response = await axios.post(
+      await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/api/user",
         {
           email: email,
@@ -31,12 +31,10 @@ export default function RegisterPage() {
       );
 
       toast.success("Registration Successful");
-      console.log(response.data);
 
       // Optionally auto-login or redirect after register:
       navigate("/login");
     } catch (e) {
-      console.log(e?.response?.data?.message || e.message);
       toast.error(e?.response?.data?.message || "Registration Failed");
     }
   }

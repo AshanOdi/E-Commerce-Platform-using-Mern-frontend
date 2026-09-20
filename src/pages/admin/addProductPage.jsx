@@ -41,7 +41,6 @@ async function AddProduct() {
     }
     try {
       const ImageUrls = await Promise.all(promisesArray)
-      console.log(ImageUrls);
 
       const altNamesArray = altNames.split(",");
 
@@ -60,14 +59,12 @@ async function AddProduct() {
         headers: {
           Authorization: "Bearer " + token,
         },
-      }).then((res) => {
+      }).then(() => {
         toast.success("Product added successfully");
-        console.log(res.data);
         navigate("/admin/products")
 
-      }).catch((err) => {
+      }).catch(() => {
         toast.error("Error adding product");
-        console.log(err);
       });
       
     } catch (error) {

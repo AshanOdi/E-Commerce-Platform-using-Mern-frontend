@@ -1,4 +1,4 @@
-import { Link, Routes, Route } from "react-router-dom";
+import { Link, Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./home";
 import AdminProductPage from "./admin/productPage";
 import AddProductPage from "./admin/addProductPage";
@@ -18,7 +18,7 @@ export default function AdminPage() {
       </div>
       <div className="h-full w-[calc(100%-300px)] bg-yellow-600">
         <Routes path="/*">
-          <Route path="/" element={<h1>FUCK YOU</h1>}></Route>
+          <Route path="/" element={<Navigate to="/admin/products" replace />}></Route>
           <Route path="/products" element={<AdminProductPage />}></Route>
           <Route path="/users" element={<AdminUsersPage />}></Route>
           <Route path="/orders" element={<AdminOrdersPage />}></Route>

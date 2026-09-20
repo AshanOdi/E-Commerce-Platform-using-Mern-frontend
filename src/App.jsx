@@ -4,7 +4,6 @@ import HomePage from "./pages/home";
 import LoginPage from "./pages/login";
 import Header from "./components/header";
 import AdminPage from "./pages/adminPage";
-import TestPage from "./pages/testPage";
 import { Toaster } from "react-hot-toast";
 import RegisterPage from "./pages/register";
 import { CartProvider } from "./context/CartContext";
@@ -28,27 +27,14 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/admin/*" element={<RequireAdmin><AdminPage /></RequireAdmin>} />
-          <Route path="/testing/*" element={<TestPage />} />
           <Route path="/*" element={<HomePage/>} />
         </Routes>
       </div>
       </WishlistProvider>
       </AuthProvider>
-
-      <div>
-        {/* <div className="relative w-[600px] h-[600px]  bg-green-500 flex flex-col items-center justify-center">
-        <div className="w-[100px] h-[100px] bg-blue-600"></div>
-        <div className="w-[100px] h-[100px] bg-green-600"></div>
-        <div className="w-[100px] h-[100px] bg-yellow-600 absolute top-[10px] left-[10px]"></div>
-        <div className="w-[100px] h-[100px] bg-purple-600"></div>
-        <div className="w-[100px] h-[100px] bg-pink-600"></div>
-      </div> */}
-      </div>
     </BrowserRouter>
     </CartProvider>
   );
 }
 
 export default App;
-
-//https://yqizeshpdzuerwuxsyul.supabase.co

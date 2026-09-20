@@ -38,11 +38,9 @@ export default function mediaUpload(file) {
       .then(() => {
         const publicUrl = supabase.storage.from("images").getPublicUrl(newName)
           .data.publicUrl;
-        console.log(publicUrl);
         resolve(publicUrl);
       })
-      .catch((e) => {
-        console.log(e);
+      .catch(() => {
         reject("error occured in supabase side");
       });
   });

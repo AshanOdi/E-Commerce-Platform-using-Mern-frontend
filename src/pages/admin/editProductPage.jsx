@@ -18,11 +18,6 @@ export default function EditProductPage() {
   const [stock, setStock] = useState(location.state.stock);
   const navigate = useNavigate()
 
-  
-  console.log(location)
-
-  
-
   async function editProduct() {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -43,9 +38,7 @@ export default function EditProductPage() {
         const promisesArray = images.map((img) => mediaUpload(img));
         imageUrls = await Promise.all(promisesArray);
       }
-  
-      console.log("Final image URLs:", imageUrls);
-  
+
       const altNamesArray = altNames.split(",");
   
       const product = {

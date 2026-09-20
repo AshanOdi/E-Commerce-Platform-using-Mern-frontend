@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { sampleProduct } from "../../assets/sampleData";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 
 export default function AdminProductPage() {
-  const [products, setProducts] = useState(sampleProduct);
+  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   const [isLoading,setIsLoading] = useState(true);
 
