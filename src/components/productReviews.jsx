@@ -180,7 +180,7 @@ export default function ProductReviews({ productId }) {
           {/* Write a review */}
           {!user && (
             <p className="text-sm text-gray-600 mb-6">
-              <Link to="/login" className="text-blue-600 hover:underline">
+              <Link to="/login" className="text-primary hover:underline">
                 Log in
               </Link>{" "}
               to write a review.
@@ -205,7 +205,7 @@ export default function ProductReviews({ productId }) {
               <button
                 type="submit"
                 disabled={submitting}
-                className="self-start bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-sm font-medium px-5 py-2 rounded-lg"
+                className="self-start bg-primary hover:bg-primary/90 disabled:opacity-50 text-white text-sm font-medium px-5 py-2 rounded-lg"
               >
                 {submitting ? "Posting…" : "Post review"}
               </button>
@@ -233,7 +233,7 @@ export default function ProductReviews({ productId }) {
                         <button
                           onClick={() => saveEdit(r._id)}
                           disabled={submitting}
-                          className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs px-4 py-1.5 rounded-md"
+                          className="bg-primary hover:bg-primary/90 disabled:opacity-50 text-white text-xs px-4 py-1.5 rounded-md"
                         >
                           Save
                         </button>
@@ -264,7 +264,7 @@ export default function ProductReviews({ productId }) {
                         <div className="flex gap-3 mt-2">
                           <button
                             onClick={() => startEdit(r)}
-                            className="text-xs text-blue-600 hover:underline"
+                            className="text-xs text-primary hover:underline"
                           >
                             Edit
                           </button>

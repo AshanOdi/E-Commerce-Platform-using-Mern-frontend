@@ -17,9 +17,9 @@ import { RequireAuth } from "../components/ProtectedRoute";
 
 export default function HomePage() {
   return (
-    <div className="w-full h-screen flex flex-col items-center">
+    <div className="flex min-h-screen w-full flex-col items-center">
       <Header />
-      <div className="w-full h-[calc(100vh-80px)] flex flex-col items-center overflow-y-auto">
+      <div className="flex h-[calc(100vh-4rem)] w-full flex-col items-center">
         <Routes path="/*">
           <Route path="/" element={<LandingPage/>} />
           <Route path="/product" element={<ProductPage/>} />

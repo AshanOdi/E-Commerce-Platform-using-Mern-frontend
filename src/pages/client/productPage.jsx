@@ -2,6 +2,17 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../../components/productCard";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // "loading" | "success" | "error"
 export default function ProductPage() {
@@ -76,106 +87,119 @@ export default function ProductPage() {
   return (
     <div className="w-full max-w-6xl px-4 py-6">
       {/* Controls */}
-      <div className="flex flex-wrap gap-3 items-end mb-6">
-        <div className="flex flex-col">
-          <label className="text-xs text-gray-500 mb-1">Search</label>
-          <input
+      <div className="mb-6 flex flex-wrap items-end gap-3">
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="search" className="text-xs text-muted-foreground">
+            Search
+          </Label>
+          <Input
+            id="search"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             placeholder="Product name..."
-            className="border border-gray-300 rounded-lg px-3 py-2 w-56"
+            className="w-56"
           />
         </div>
-        <div className="flex flex-col">
-          <label className="text-xs text-gray-500 mb-1">Min price</label>
-          <input
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="minPrice" className="text-xs text-muted-foreground">
+            Min price
+          </Label>
+          <Input
+            id="minPrice"
             type="number"
             value={minPrice}
             onChange={(e) => updateParams({ minPrice: e.target.value || null, page: null })}
-            className="border border-gray-300 rounded-lg px-3 py-2 w-28"
+            className="w-28"
           />
         </div>
-        <div className="flex flex-col">
-          <label className="text-xs text-gray-500 mb-1">Max price</label>
-          <input
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="maxPrice" className="text-xs text-muted-foreground">
+            Max price
+          </Label>
+          <Input
+            id="maxPrice"
             type="number"
             value={maxPrice}
             onChange={(e) => updateParams({ maxPrice: e.target.value || null, page: null })}
-            className="border border-gray-300 rounded-lg px-3 py-2 w-28"
+            className="w-28"
           />
         </div>
-        <div className="flex flex-col">
-          <label className="text-xs text-gray-500 mb-1">Sort</label>
-          <select
-            value={sort}
-            onChange={(e) => updateParams({ sort: e.target.value, page: null })}
-            className="border border-gray-300 rounded-lg px-3 py-2"
-          >
-            <option value="name_asc">Name (A–Z)</option>
-            <option value="name_desc">Name (Z–A)</option>
-            <option value="price_asc">Price (low → high)</option>
-            <option value="price_desc">Price (high → low)</option>
-          </select>
+        <div className="flex flex-col gap-1.5">
+          <Label className="text-xs text-muted-foreground">Sort</Label>
+          <Select value={sort} onValueChange={(v) => updateParams({ sort: v, page: null })}>
+            <SelectTrigger className="w-44">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="name_asc">Name (A–Z)</SelectItem>
+              <SelectItem value="name_desc">Name (Z–A)</SelectItem>
+              <SelectItem value="price_asc">Price (low → high)</SelectItem>
+              <SelectItem value="price_desc">Price (high → low)</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         {(currentSearch || minPrice || maxPrice || sort !== "name_asc") && (
-          <button
+          <Button
+            variant="link"
+            className="pb-2"
             onClick={() => {
               setSearchInput("");
               setSearchParams({}, { replace: true });
             }}
-            className="text-sm text-blue-600 hover:underline pb-2"
           >
             Clear filters
-          </button>
+          </Button>
         )}
       </div>
 
       {/* Results */}
       {status === "loading" && (
-        <div className="w-full flex justify-center py-16">
-          <div className="w-[70px] h-[70px] border-[5px] border-gray-500 border-t-blue-900 rounded-full animate-spin"></div>
+        <div className="flex flex-wrap justify-center gap-5 py-4">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <Skeleton key={i} className="h-[380px] w-[280px] rounded-xl" />
+          ))}
         </div>
       )}
 
       {status === "error" && (
-        <div className="w-full text-center py-16 text-gray-600">
+        <div className="w-full py-16 text-center text-muted-foreground">
           Something went wrong loading products. Please try again.
         </div>
       )}
 
       {status === "success" && products.length === 0 && (
-        <div className="w-full text-center py-16 text-gray-500">
+        <div className="w-full py-16 text-center text-muted-foreground">
           No products match your search.
         </div>
       )}
 
       {status === "success" && products.length > 0 && (
         <>
-          <div className="flex flex-wrap justify-center">
+          <div className="flex flex-wrap justify-center gap-5">
             {products.map((product) => (
               <ProductCard key={product.productId} product={product} />
             ))}
           </div>
 
-          <div className="flex items-center justify-center gap-4 mt-8">
-            <button
+          <div className="mt-8 flex items-center justify-center gap-4">
+            <Button
+              variant="outline"
               disabled={page <= 1}
               onClick={() => updateParams({ page: page - 1 })}
-              className="px-4 py-2 rounded-lg border border-gray-300 disabled:opacity-40"
             >
               Previous
-            </button>
-            <span className="text-sm text-gray-600">
+            </Button>
+            <span className="text-sm text-muted-foreground">
               Page {pagination.page} of {pagination.totalPages} · {pagination.total} product
               {pagination.total !== 1 ? "s" : ""}
             </span>
-            <button
+            <Button
+              variant="outline"
               disabled={page >= pagination.totalPages}
               onClick={() => updateParams({ page: page + 1 })}
-              className="px-4 py-2 rounded-lg border border-gray-300 disabled:opacity-40"
             >
               Next
-            </button>
+            </Button>
           </div>
         </>
       )}

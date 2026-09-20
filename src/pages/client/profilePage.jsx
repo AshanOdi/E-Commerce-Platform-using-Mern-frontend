@@ -73,7 +73,7 @@ export default function ProfilePage() {
   if (status === "loading") {
     return (
       <div className="w-full h-full flex justify-center items-center">
-        <div className="w-[70px] h-[70px] border-[5px] border-gray-500 border-t-blue-900 rounded-full animate-spin"></div>
+        <div className="w-[70px] h-[70px] border-[5px] border-muted border-t-primary rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -171,7 +171,7 @@ export default function ProfilePage() {
         <button
           type="submit"
           disabled={saving}
-          className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium py-3 rounded-lg mt-2"
+          className="bg-primary hover:bg-primary/90 disabled:opacity-50 text-white font-medium py-3 rounded-lg mt-2"
         >
           {saving ? "Saving…" : "Save Changes"}
         </button>

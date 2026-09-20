@@ -1,7 +1,40 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { FaShieldAlt, FaStar, FaTag } from "react-icons/fa";
 import ProductCard from "../../components/productCard";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { AnimatedGradientText } from "@/components/ui/animated-gradient-text";
+
+const values = [
+  {
+    icon: FaTag,
+    title: "Honest Pricing",
+    body: "What you see is what you pay — no hidden markups.",
+  },
+  {
+    icon: FaShieldAlt,
+    title: "Secure Checkout",
+    body: "Your order and payment details are handled securely, every time.",
+  },
+  {
+    icon: FaStar,
+    title: "Real Reviews",
+    body: "Ratings and reviews come only from real customers.",
+  },
+];
+
+function ProductGridSkeleton() {
+  return (
+    <div className="flex flex-wrap justify-center gap-5">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <Skeleton key={i} className="h-[380px] w-[280px] rounded-xl" />
+      ))}
+    </div>
+  );
+}
 
 export default function LandingPage() {
   const [featured, setFeatured] = useState([]);
@@ -21,33 +54,52 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <main className="w-full flex flex-col items-center">
+    <main className="flex w-full flex-col items-center">
       {/* Hero */}
-      <section className="w-full bg-gradient-to-br from-purple-50 to-pink-50 py-20 px-4 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-800">
-          Skincare & Beauty, Simplified
-        </h1>
-        <p className="text-gray-600 mt-4 max-w-xl mx-auto">
-          Carefully chosen products for your everyday routine — hydrating, gentle, and honestly
-          priced.
-        </p>
-        <Link
-          to="/product"
-          className="inline-block mt-8 bg-blue-600 hover:bg-blue-700 text-white font-medium px-8 py-3 rounded-lg"
-        >
-          Shop Now
-        </Link>
+      <section className="relative w-full overflow-hidden bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50 px-4 py-24 text-center">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(219,39,119,0.12),transparent_45%),radial-gradient(circle_at_80%_0%,rgba(168,85,247,0.12),transparent_40%)]"
+        />
+        <div className="relative">
+          <Badge
+            variant="secondary"
+            className="mb-4 h-auto whitespace-normal border border-primary/20 bg-white/70 px-3 py-1 text-primary"
+          >
+            New in — Spring skincare edit
+          </Badge>
+          <h1 className="font-heading text-4xl font-bold tracking-tight text-foreground md:text-6xl">
+            Skincare &amp; Beauty,{" "}
+            <AnimatedGradientText colorFrom="#db2777" colorTo="#a855f7" className="font-bold">
+              Simplified
+            </AnimatedGradientText>
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-base text-muted-foreground md:text-lg">
+            Carefully chosen products for your everyday routine — hydrating, gentle, and honestly
+            priced.
+          </p>
+          <div className="mt-8 flex items-center justify-center gap-3">
+            <Button size="lg" asChild className="h-11 px-8 text-base">
+              <Link to="/product">Shop Now</Link>
+            </Button>
+            <Button size="lg" variant="outline" asChild className="h-11 px-8 text-base">
+              <Link to="/concierge">Ask the AI Concierge</Link>
+            </Button>
+          </div>
+        </div>
       </section>
 
       {/* Featured products */}
       <section className="w-full max-w-6xl px-4 py-16" aria-labelledby="featured-heading">
-        <h2 id="featured-heading" className="text-2xl font-bold text-gray-800 mb-6">
+        <h2 id="featured-heading" className="mb-6 font-heading text-2xl font-bold text-foreground">
           Featured Products
         </h2>
-        {status === "loading" && <p className="text-gray-500">Loading…</p>}
-        {status === "error" && <p className="text-gray-500">Couldn’t load products right now.</p>}
+        {status === "loading" && <ProductGridSkeleton />}
+        {status === "error" && (
+          <p className="text-muted-foreground">Couldn't load products right now.</p>
+        )}
         {status === "success" && (
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="flex flex-wrap justify-center gap-5">
             {featured.map((p) => (
               <ProductCard key={p.productId} product={p} />
             ))}
@@ -58,10 +110,10 @@ export default function LandingPage() {
       {/* On sale */}
       {onSale.length > 0 && (
         <section className="w-full max-w-6xl px-4 py-16" aria-labelledby="sale-heading">
-          <h2 id="sale-heading" className="text-2xl font-bold text-gray-800 mb-6">
+          <h2 id="sale-heading" className="mb-6 font-heading text-2xl font-bold text-foreground">
             On Sale
           </h2>
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="flex flex-wrap justify-center gap-5">
             {onSale.map((p) => (
               <ProductCard key={p.productId} product={p} />
             ))}
@@ -70,41 +122,37 @@ export default function LandingPage() {
       )}
 
       {/* Value proposition */}
-      <section className="w-full bg-gray-50 py-16 px-4" aria-labelledby="values-heading">
+      <section className="w-full bg-muted/40 px-4 py-16" aria-labelledby="values-heading">
         <h2 id="values-heading" className="sr-only">
           Why shop with us
         </h2>
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          <div>
-            <h3 className="font-semibold text-gray-800 text-lg">Honest Pricing</h3>
-            <p className="text-gray-600 text-sm mt-2">
-              What you see is what you pay — no hidden markups.
-            </p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-gray-800 text-lg">Secure Checkout</h3>
-            <p className="text-gray-600 text-sm mt-2">
-              Your order and payment details are handled securely, every time.
-            </p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-gray-800 text-lg">Real Reviews</h3>
-            <p className="text-gray-600 text-sm mt-2">
-              Ratings and reviews come only from real customers.
-            </p>
-          </div>
+        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 text-center md:grid-cols-3">
+          {values.map((value) => (
+            <div key={value.title} className="flex flex-col items-center">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <value.icon size={20} />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">{value.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{value.body}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* AI Concierge teaser — not live yet */}
+      {/* AI Concierge teaser */}
       <section className="w-full max-w-3xl px-4 py-16 text-center">
-        <span className="inline-block bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full mb-3">
-          Coming soon
-        </span>
-        <h2 className="text-xl font-bold text-gray-800">AI Beauty & Style Concierge</h2>
-        <p className="text-gray-600 mt-2">
+        <Badge className="mb-3 bg-primary/10 text-primary" variant="secondary">
+          Live now
+        </Badge>
+        <h2 className="font-heading text-xl font-bold text-foreground">
+          AI Beauty &amp; Style Concierge
+        </h2>
+        <p className="mt-2 text-muted-foreground">
           Tell us your budget and occasion, and get a product bundle picked just for you.
         </p>
+        <Button variant="link" asChild className="mt-2">
+          <Link to="/concierge">Try it now →</Link>
+        </Button>
       </section>
     </main>
   );

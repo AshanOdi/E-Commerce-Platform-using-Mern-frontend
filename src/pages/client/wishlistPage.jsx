@@ -22,7 +22,7 @@ export default function WishlistPage() {
       <div className="w-full h-full flex flex-col justify-center items-center gap-3">
         <h1 className="text-2xl font-semibold text-gray-700">Your wishlist is empty</h1>
         <p className="text-gray-500">Tap the heart on any product to save it here.</p>
-        <Link to="/product" className="text-blue-600 hover:underline">
+        <Link to="/product" className="text-primary hover:underline">
           Browse products
         </Link>
       </div>
@@ -71,7 +71,7 @@ export default function WishlistPage() {
                 onClick={() => handleAddToCart(product)}
                 disabled={unavailable}
                 className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors ${
-                  unavailable ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                  unavailable ? "bg-gray-400 cursor-not-allowed" : "bg-primary hover:bg-primary/90"
                 }`}
               >
                 Add to Cart

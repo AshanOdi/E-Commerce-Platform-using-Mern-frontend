@@ -1,7 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -9,15 +13,18 @@ export default function RegisterPage() {
   const [lastName, setLastName] = useState("");
   const [pw, setPw] = useState("");
   const [confirmPw, setConfirmPw] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const navigate = useNavigate();
 
-  async function handleRegister() {
+  async function handleRegister(e) {
+    e.preventDefault();
     if (pw !== confirmPw) {
       toast.error("Passwords do not match");
       return;
     }
 
+    setSubmitting(true);
     try {
       await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/api/user",
@@ -36,60 +43,100 @@ export default function RegisterPage() {
       navigate("/login");
     } catch (e) {
       toast.error(e?.response?.data?.message || "Registration Failed");
+    } finally {
+      setSubmitting(false);
     }
   }
 
   return (
-    <div className="w-full h-screen bg-[url('/loginpage.jpg')] bg-center bg-cover flex flex-row justify-center items-center">
-      <div className="w-[50%] h-full  "></div>
-      <div className="w-[500px] h-[700px] backdrop-blur-md flex flex-col justify-center items-center rounded-[20px] shadow-xl">
-        <input
-          onChange={(e) => setFirstName(e.target.value)}
-          value={firstName}
-          type="text"
-          placeholder="First Name"
-          className="w-[400px] h-[50px] bg-[#c3efe9] my-3 rounded-[5px] px-3"
-        />
+    <div className="flex min-h-screen w-full flex-row items-center justify-center bg-[url('/loginpage.jpg')] bg-cover bg-center py-10">
+      <div className="hidden h-full w-1/2 md:block" />
+      <Card className="mx-4 w-full max-w-md bg-white/80 shadow-2xl backdrop-blur-md">
+        <CardHeader className="text-center">
+          <img
+            src="/logo-icon.png"
+            alt="Store logo"
+            className="mx-auto mb-2 h-16 w-16 rounded-full object-cover"
+          />
+          <CardTitle className="font-heading text-2xl">Create your account</CardTitle>
+          <CardDescription>Join us for personalized skincare picks</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleRegister} className="flex flex-col gap-4">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="firstName">First Name</Label>
+                <Input
+                  id="firstName"
+                  onChange={(e) => setFirstName(e.target.value)}
+                  value={firstName}
+                  type="text"
+                  placeholder="Jane"
+                  required
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="lastName">Last Name</Label>
+                <Input
+                  id="lastName"
+                  onChange={(e) => setLastName(e.target.value)}
+                  value={lastName}
+                  type="text"
+                  placeholder="Doe"
+                  required
+                />
+              </div>
+            </div>
 
-        <input
-          onChange={(e) => setLastName(e.target.value)}
-          value={lastName}
-          type="text"
-          placeholder="Last Name"
-          className="w-[400px] h-[50px] bg-[#c3efe9] my-3 rounded-[5px] px-3"
-        />
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                type="email"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
 
-        <input
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-          type="email"
-          placeholder="Email"
-          className="w-[400px] h-[50px] bg-[#c3efe9] my-3 rounded-[5px] px-3"
-        />
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                onChange={(e) => setPw(e.target.value)}
+                value={pw}
+                type="password"
+                placeholder="••••••••"
+                required
+              />
+            </div>
 
-        <input
-          onChange={(e) => setPw(e.target.value)}
-          value={pw}
-          type="password"
-          placeholder="Password"
-          className="w-[400px] h-[50px] bg-[#4e5c5a] my-3 rounded-[5px] px-3"
-        />
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Input
+                id="confirmPassword"
+                onChange={(e) => setConfirmPw(e.target.value)}
+                value={confirmPw}
+                type="password"
+                placeholder="••••••••"
+                required
+              />
+            </div>
 
-        <input
-          onChange={(e) => setConfirmPw(e.target.value)}
-          value={confirmPw}
-          type="password"
-          placeholder="Confirm Password"
-          className="w-[400px] h-[50px] bg-[#4e5c5a] my-3 rounded-[5px] px-3"
-        />
+            <Button type="submit" disabled={submitting} className="mt-2 h-11">
+              {submitting ? "Creating account…" : "Register"}
+            </Button>
+          </form>
 
-        <button
-          onClick={handleRegister}
-          className="w-[150px] h-[50px] cursor-pointer bg-[#d8d811] my-3 rounded-[5px]"
-        >
-          Register
-        </button>
-      </div>
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            Already have an account?{" "}
+            <Link to="/login" className="font-medium text-primary hover:underline">
+              Log in
+            </Link>
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }

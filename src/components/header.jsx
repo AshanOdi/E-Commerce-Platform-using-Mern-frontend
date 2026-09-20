@@ -1,64 +1,160 @@
-import { Link, useNavigate } from "react-router-dom";
-import { FaShoppingCart } from "react-icons/fa";
+import { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { FaShoppingCart, FaRegHeart, FaBars } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useWishlist } from "../context/WishlistContext";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
+
+const navLinks = [
+  { to: "/", label: "Home", end: true },
+  { to: "/product", label: "Products" },
+  { to: "/about", label: "About" },
+  { to: "/contact", label: "Contact" },
+  { to: "/concierge", label: "AI Concierge" },
+];
+
+function NavItem({ to, label, end, onNavigate, className }) {
+  return (
+    <NavLink
+      to={to}
+      end={end}
+      onClick={onNavigate}
+      className={({ isActive }) =>
+        cn(
+          "px-3 py-2 text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground",
+          isActive && "text-primary",
+          className
+        )
+      }
+    >
+      {label}
+    </NavLink>
+  );
+}
 
 export default function Header() {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { cartItemCount } = useCart();
   const { isAuthenticated, user, logout } = useAuth();
   const { products: wishlistProducts } = useWishlist();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const initials = user ? `${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}` : "";
 
   return (
-    <div className="w-full h-[80px] shadow-2xl flex" >
-      <img src="/logo.png" alt="logo" className="w-[80px] h-[80px] object-cover top-0 left-0 m-2 cursor-pointer"
-      onClick={()=>{
-        navigate("/")
-      }}/>
-      <div className="w-[calc(100%-160px)] h-full flex justify-center items-center">
-        <Link to="/" className=" text-[20px] font-boold mx-2">Home</Link>
-        <Link to="/product" className=" text-[20px] font-boold mx-2">Products</Link>
-        <Link to="/about" className=" text-[20px] font-boold mx-2">About</Link>
-        <Link to="/contact" className=" text-[20px] font-boold mx-2">Contact</Link>
-        <Link to="/concierge" className=" text-[20px] font-boold mx-2">AI Concierge</Link>
+    <header className="sticky top-0 z-40 flex h-16 w-full items-center gap-2 border-b bg-background/80 px-4 backdrop-blur supports-backdrop-filter:bg-background/60 md:px-8">
+      <img
+        src="/logo-icon.png"
+        alt="Store logo"
+        className="h-11 w-11 shrink-0 cursor-pointer rounded-full object-cover"
+        onClick={() => navigate("/")}
+      />
+
+      <nav className="ml-2 hidden flex-1 items-center gap-1 md:flex">
+        {navLinks.map((link) => (
+          <NavItem key={link.to} {...link} />
+        ))}
+      </nav>
+
+      <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+        <SheetTrigger asChild>
+          <Button variant="ghost" size="icon" className="ml-1 md:hidden" aria-label="Open menu">
+            <FaBars size={18} />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-64">
+          <SheetHeader>
+            <SheetTitle>Menu</SheetTitle>
+          </SheetHeader>
+          <nav className="flex flex-col gap-1 px-4">
+            {navLinks.map((link) => (
+              <NavItem
+                key={link.to}
+                {...link}
+                onNavigate={() => setMenuOpen(false)}
+                className="text-base"
+              />
+            ))}
+          </nav>
+        </SheetContent>
+      </Sheet>
+
+      <div className="ml-auto flex items-center gap-1.5">
+        {isAuthenticated && (
+          <Button variant="ghost" size="icon" asChild className="relative">
+            <Link to="/wishlist" aria-label="Wishlist">
+              <FaRegHeart size={17} />
+              {wishlistProducts.length > 0 && (
+                <Badge className="absolute -top-1 -right-1 h-4 min-w-4 justify-center rounded-full px-1 text-[10px]">
+                  {wishlistProducts.length}
+                </Badge>
+              )}
+            </Link>
+          </Button>
+        )}
+
+        <Button variant="ghost" size="icon" asChild className="relative">
+          <Link to="/cart" aria-label="Cart">
+            <FaShoppingCart size={17} />
+            {cartItemCount > 0 && (
+              <Badge className="absolute -top-1 -right-1 h-4 min-w-4 justify-center rounded-full px-1 text-[10px]">
+                {cartItemCount}
+              </Badge>
+            )}
+          </Link>
+        </Button>
 
         {isAuthenticated ? (
-          <>
-            <Link to="/my-orders" className=" text-[20px] font-boold mx-2">My Orders</Link>
-            <Link to="/wishlist" className=" text-[20px] font-boold mx-2">
-              Wishlist{wishlistProducts.length > 0 ? ` (${wishlistProducts.length})` : ""}
-            </Link>
-            <Link to="/profile" className="text-[16px] text-gray-500 mx-2 hover:underline">
-              Hi, {user.firstName}
-            </Link>
-            <button
-              onClick={logout}
-              className="text-[20px] font-boold mx-2 cursor-pointer text-red-600"
-            >
-              Logout
-            </button>
-          </>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="ml-1 flex items-center gap-2 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={user.image} alt={user.firstName} />
+                  <AvatarFallback className="bg-primary text-xs text-primary-foreground">
+                    {initials}
+                  </AvatarFallback>
+                </Avatar>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuLabel>Hi, {user.firstName}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link to="/profile">Profile</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/my-orders">My Orders</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem variant="destructive" onClick={logout}>
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         ) : (
-          <>
-            <Link to="/login" className=" text-[20px] font-boold mx-2">Login</Link>
-            <Link to="/register" className=" text-[20px] font-boold mx-2">Register</Link>
-          </>
+          <div className="ml-1 flex items-center gap-2">
+            <Button variant="ghost" asChild>
+              <Link to="/login">Login</Link>
+            </Button>
+            <Button asChild>
+              <Link to="/register">Register</Link>
+            </Button>
+          </div>
         )}
-
       </div>
-      <Link
-        to="/cart"
-        className="w-[80px] h-full bg-blue-600 hover:bg-blue-700 flex items-center justify-center relative text-white transition-colors"
-      >
-        <FaShoppingCart size={22} />
-        {cartItemCount > 0 && (
-          <span className="absolute top-3 right-4 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-            {cartItemCount}
-          </span>
-        )}
-      </Link>
-    </div>
+    </header>
   );
 }

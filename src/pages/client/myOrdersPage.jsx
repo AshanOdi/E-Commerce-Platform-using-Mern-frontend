@@ -29,7 +29,7 @@ export default function MyOrdersPage() {
   if (status === "loading") {
     return (
       <div className="w-full h-full flex justify-center items-center">
-        <div className="w-[70px] h-[70px] border-[5px] border-gray-500 border-t-blue-900 rounded-full animate-spin"></div>
+        <div className="w-[70px] h-[70px] border-[5px] border-muted border-t-primary rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -47,7 +47,7 @@ export default function MyOrdersPage() {
     return (
       <div className="w-full h-full flex flex-col justify-center items-center gap-3">
         <h1 className="text-2xl font-semibold text-gray-700">You have no orders yet</h1>
-        <Link to="/product" className="text-blue-600 hover:underline">
+        <Link to="/product" className="text-primary hover:underline">
           Start shopping
         </Link>
       </div>

@@ -1,9 +1,15 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { ImageOff } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useWishlist } from "../context/WishlistContext";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default function ProductCard({ product }) {
   const navigate = useNavigate();
@@ -11,6 +17,7 @@ export default function ProductCard({ product }) {
   const { isAuthenticated } = useAuth();
   const { isWishlisted, toggleWishlist } = useWishlist();
   const wishlisted = isWishlisted(product.productId);
+  const [imageFailed, setImageFailed] = useState(false);
 
   function handleAddToCart(e) {
     e.stopPropagation(); // don't also trigger the card's own navigate()
@@ -27,83 +34,81 @@ export default function ProductCard({ product }) {
     toggleWishlist(product.productId).catch(() => toast.error("Could not update wishlist"));
   }
 
-  return (
-    <div
-      onClick={() => navigate("/product/" + product.productId)}
-      className="w-[300px] h-[400px] bg-white rounded-2xl shadow-lg m-3 flex flex-col overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer relative"
-    >
-      <button
-        onClick={handleToggleWishlist}
-        aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-        className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/90 shadow flex items-center justify-center hover:scale-110 transition-transform"
-      >
-        {wishlisted ? (
-          <FaHeart className="text-red-500" size={16} />
-        ) : (
-          <FaRegHeart className="text-gray-500" size={16} />
-        )}
-      </button>
+  const onSale = product.labelledPrice && product.labelledPrice > product.price;
 
-      {/* Product Image */}
-      <div className="h-1/2 w-full overflow-hidden flex items-center justify-center bg-gray-100">
-        {product.images && product.images.length > 0 ? (
+  return (
+    <Card
+      onClick={() => navigate("/product/" + product.productId)}
+      className="w-[280px] gap-0 overflow-hidden p-0 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+    >
+      <div className="relative h-56 w-full overflow-hidden bg-muted">
+        {onSale && (
+          <Badge className="absolute top-3 left-3 z-10 bg-primary text-primary-foreground shadow">
+            Sale
+          </Badge>
+        )}
+
+        <button
+          onClick={handleToggleWishlist}
+          aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          className="absolute top-3 right-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow transition-transform hover:scale-110"
+        >
+          {wishlisted ? (
+            <FaHeart className="text-primary" size={16} />
+          ) : (
+            <FaRegHeart className="text-muted-foreground" size={16} />
+          )}
+        </button>
+
+        {product.images && product.images.length > 0 && !imageFailed ? (
           <img
             src={product.images[0]}
             alt={product.name}
-            className="object-cover h-full w-full hover:scale-105 transition-transform duration-300"
+            onError={() => setImageFailed(true)}
+            className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
           />
         ) : (
-          <div className="text-gray-500 text-sm">No Image</div>
+          <div className="flex h-full w-full flex-col items-center justify-center gap-1 text-muted-foreground">
+            <ImageOff size={28} strokeWidth={1.5} />
+            <span className="text-xs">No Image</span>
+          </div>
         )}
       </div>
 
-      {/* Product Info */}
-      <div className="p-4 flex flex-col justify-between flex-1">
-        <div>
-          <h2 className="text-lg font-semibold text-gray-600 truncate">
-            {product.name}
-          </h2>
-          <p className="text-sm text-gray-500 line-clamp-2">
-            {product.description}
-          </p>
-        </div>
+      <CardContent className="flex flex-1 flex-col gap-1 px-4 pt-4">
+        <h2 className="truncate font-heading text-base font-semibold text-foreground">
+          {product.name}
+        </h2>
+        <p className="line-clamp-2 text-sm text-muted-foreground">{product.description}</p>
 
-        {/* Price + Availability */}
-        <div className="mt-3">
-          <div className="flex items-center space-x-2">
-            {product.labelledPrice && product.labelledPrice > product.price && (
-              <span className="text-sm text-gray-400 line-through">
-                ${product.labelledPrice.toFixed(2)}
-              </span>
-            )}
-            <span className="text-xl font-bold text-red-600">
-              ${product.price.toFixed(2)}
+        <div className="mt-2 flex items-baseline gap-2">
+          {onSale && (
+            <span className="text-sm text-muted-foreground line-through">
+              ${product.labelledPrice.toFixed(2)}
             </span>
-          </div>
-          <p
-            className={`text-sm mt-1 ${
-              product.isAvailable ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            {product.isAvailable
-              ? `In Stock (${product.stock})`
-              : "Out of Stock"}
-          </p>
+          )}
+          <span className="text-xl font-bold text-primary">${product.price.toFixed(2)}</span>
         </div>
 
-        {/* Action Button */}
-        <button
+        <p
+          className={cn(
+            "text-xs font-medium",
+            product.isAvailable ? "text-emerald-600" : "text-destructive"
+          )}
+        >
+          {product.isAvailable ? `In Stock (${product.stock})` : "Out of Stock"}
+        </p>
+      </CardContent>
+
+      <CardFooter className="p-4 pt-3">
+        <Button
           onClick={handleAddToCart}
           disabled={!product.isAvailable}
-          className={`mt-4 w-full py-2 rounded-lg text-white font-medium transition-colors ${
-            product.isAvailable
-              ? "bg-blue-600 hover:bg-blue-700"
-              : "bg-gray-400 cursor-not-allowed"
-          }`}
+          className="w-full"
         >
           {product.isAvailable ? "Add to Cart" : "Unavailable"}
-        </button>
-      </div>
-    </div>
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }

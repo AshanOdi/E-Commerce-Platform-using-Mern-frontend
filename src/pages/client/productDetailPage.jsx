@@ -43,7 +43,7 @@ export default function ProductDetailPage() {
   if (status === "loading") {
     return (
       <div className="w-full h-full flex justify-center items-center">
-        <div className="w-[70px] h-[70px] border-[5px] border-gray-500 border-t-blue-900 rounded-full animate-spin"></div>
+        <div className="w-[70px] h-[70px] border-[5px] border-muted border-t-primary rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -53,7 +53,7 @@ export default function ProductDetailPage() {
       <div className="w-full h-full flex flex-col justify-center items-center gap-3">
         <h1 className="text-2xl font-semibold text-gray-700">Product not found</h1>
         <p className="text-gray-500">This product may have been removed or is no longer available.</p>
-        <Link to="/product" className="text-blue-600 hover:underline">
+        <Link to="/product" className="text-primary hover:underline">
           Back to all products
         </Link>
       </div>
@@ -65,7 +65,7 @@ export default function ProductDetailPage() {
       <div className="w-full h-full flex flex-col justify-center items-center gap-3">
         <h1 className="text-2xl font-semibold text-gray-700">Something went wrong</h1>
         <p className="text-gray-500">Please try again in a moment.</p>
-        <Link to="/product" className="text-blue-600 hover:underline">
+        <Link to="/product" className="text-primary hover:underline">
           Back to all products
         </Link>
       </div>
@@ -124,7 +124,7 @@ export default function ProductDetailPage() {
                 alt={`${product.name} thumbnail ${index + 1}`}
                 onClick={() => setActiveImage(index)}
                 className={`w-16 h-16 object-cover rounded-lg cursor-pointer border-2 flex-shrink-0 ${
-                  index === activeImage ? "border-blue-600" : "border-transparent"
+                  index === activeImage ? "border-primary" : "border-transparent"
                 }`}
               />
             ))}
@@ -160,7 +160,7 @@ export default function ProductDetailPage() {
               ${product.labelledPrice.toFixed(2)}
             </span>
           )}
-          <span className="text-3xl font-bold text-red-600">${product.price.toFixed(2)}</span>
+          <span className="text-3xl font-bold text-primary">${product.price.toFixed(2)}</span>
         </div>
 
         <p className={`mt-2 text-sm font-medium ${product.isAvailable ? "text-green-600" : "text-red-600"}`}>
@@ -193,7 +193,7 @@ export default function ProductDetailPage() {
           disabled={!product.isAvailable}
           className={`mt-8 w-full md:w-auto px-8 py-3 rounded-lg text-white font-medium transition-colors ${
             product.isAvailable
-              ? "bg-blue-600 hover:bg-blue-700"
+              ? "bg-primary hover:bg-primary/90"
               : "bg-gray-400 cursor-not-allowed"
           }`}
         >

@@ -77,7 +77,7 @@ export default function ConciergePage() {
         <button
           type="submit"
           disabled={status === "loading"}
-          className="mt-2 w-full sm:w-auto self-start px-8 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium transition-colors"
+          className="mt-2 w-full sm:w-auto self-start px-8 py-3 rounded-lg bg-primary hover:bg-primary/90 disabled:bg-gray-400 text-white font-medium transition-colors"
         >
           {status === "loading" ? "Thinking…" : "Get Recommendations"}
         </button>
@@ -101,7 +101,7 @@ export default function ConciergePage() {
                 <h2 className="text-lg font-semibold text-gray-800">Recommended for you</h2>
                 <button
                   onClick={handleAddAllToCart}
-                  className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium"
+                  className="px-4 py-2 rounded-lg bg-primary hover:bg-primary/90 text-white text-sm font-medium"
                 >
                   Add All to Cart
                 </button>

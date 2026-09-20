@@ -34,7 +34,7 @@ export default function OrderDetailPage() {
   if (status === "loading") {
     return (
       <div className="w-full h-full flex justify-center items-center">
-        <div className="w-[70px] h-[70px] border-[5px] border-gray-500 border-t-blue-900 rounded-full animate-spin"></div>
+        <div className="w-[70px] h-[70px] border-[5px] border-muted border-t-primary rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -43,7 +43,7 @@ export default function OrderDetailPage() {
     return (
       <div className="w-full h-full flex flex-col justify-center items-center gap-3">
         <h1 className="text-2xl font-semibold text-gray-700">Order not found</h1>
-        <Link to="/my-orders" className="text-blue-600 hover:underline">
+        <Link to="/my-orders" className="text-primary hover:underline">
           Back to my orders
         </Link>
       </div>
@@ -61,7 +61,7 @@ export default function OrderDetailPage() {
 
   return (
     <div className="w-full max-w-3xl px-4 py-8">
-      <Link to="/my-orders" className="text-blue-600 hover:underline text-sm">
+      <Link to="/my-orders" className="text-primary hover:underline text-sm">
         ← Back to my orders
       </Link>
 

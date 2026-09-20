@@ -77,7 +77,7 @@ export default function PayPage() {
   if (phase === "loading") {
     return (
       <div className="w-full flex justify-center py-24">
-        <div className="w-[70px] h-[70px] border-[5px] border-gray-500 border-t-blue-900 rounded-full animate-spin"></div>
+        <div className="w-[70px] h-[70px] border-[5px] border-muted border-t-primary rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -86,7 +86,7 @@ export default function PayPage() {
     return (
       <div className={box}>
         <h1 className="text-xl font-semibold text-gray-800">Payment not found</h1>
-        <Link to="/product" className="text-blue-600 hover:underline mt-3 inline-block">
+        <Link to="/product" className="text-primary hover:underline mt-3 inline-block">
           Back to shop
         </Link>
       </div>
@@ -110,10 +110,10 @@ export default function PayPage() {
           Order <span className="font-mono font-semibold">{orderId}</span> is confirmed.
         </p>
         <div className="flex gap-4 justify-center mt-4">
-          <Link to={"/my-orders/" + orderId} className="text-blue-600 hover:underline">
+          <Link to={"/my-orders/" + orderId} className="text-primary hover:underline">
             View order
           </Link>
-          <Link to="/product" className="text-blue-600 hover:underline">
+          <Link to="/product" className="text-primary hover:underline">
             Continue shopping
           </Link>
         </div>
@@ -129,7 +129,7 @@ export default function PayPage() {
           Order <span className="font-mono font-semibold">{orderId}</span> was cancelled and the
           items returned to stock.
         </p>
-        <Link to="/product" className="text-blue-600 hover:underline mt-4 inline-block">
+        <Link to="/product" className="text-primary hover:underline mt-4 inline-block">
           Back to shop
         </Link>
       </div>
@@ -153,7 +153,7 @@ export default function PayPage() {
         <div className="flex flex-col gap-3 mt-6">
           <button
             onClick={() => pay("success")}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg"
+            className="bg-primary hover:bg-primary/90 text-white font-medium py-3 rounded-lg"
           >
             Pay Now
           </button>
