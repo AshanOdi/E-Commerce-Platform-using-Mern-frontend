@@ -60,7 +60,7 @@ export default function AdminOrderDetailPage() {
   if (status === "loading") {
     return (
       <div className="w-full h-full flex justify-center items-center">
-        <div className="w-[70px] h-[70px] border-[5px] border-gray-500 border-t-blue-900 rounded-full animate-spin"></div>
+        <div className="w-[70px] h-[70px] border-[5px] border-muted border-t-primary rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -69,7 +69,7 @@ export default function AdminOrderDetailPage() {
     return (
       <div className="w-full h-full flex flex-col justify-center items-center gap-2">
         <h1 className="text-2xl font-semibold text-gray-700">Order not found</h1>
-        <Link to="/admin/orders" className="text-blue-600 hover:underline">
+        <Link to="/admin/orders" className="text-primary hover:underline">
           Back to orders
         </Link>
       </div>
@@ -80,7 +80,7 @@ export default function AdminOrderDetailPage() {
     return (
       <div className="w-full h-full flex flex-col justify-center items-center gap-2">
         <h1 className="text-2xl font-semibold text-gray-700">Something went wrong</h1>
-        <Link to="/admin/orders" className="text-blue-600 hover:underline">
+        <Link to="/admin/orders" className="text-primary hover:underline">
           Back to orders
         </Link>
       </div>
@@ -90,8 +90,8 @@ export default function AdminOrderDetailPage() {
   const nextOptions = NEXT_STATUSES[order.status] || [];
 
   return (
-    <div className="w-full h-full bg-white overflow-y-auto p-6">
-      <Link to="/admin/orders" className="text-blue-600 hover:underline text-sm">
+    <div className="w-full h-full overflow-y-auto p-6">
+      <Link to="/admin/orders" className="text-primary hover:underline text-sm">
         ← Back to orders
       </Link>
 
@@ -167,7 +167,7 @@ export default function AdminOrderDetailPage() {
                   className={`px-4 py-2 rounded-lg text-white font-medium capitalize transition-colors disabled:opacity-50 ${
                     s === "cancelled"
                       ? "bg-red-600 hover:bg-red-700"
-                      : "bg-blue-600 hover:bg-blue-700"
+                      : "bg-primary hover:bg-primary/90"
                   }`}
                 >
                   {s === "cancelled" ? "Cancel order" : "Mark " + s}

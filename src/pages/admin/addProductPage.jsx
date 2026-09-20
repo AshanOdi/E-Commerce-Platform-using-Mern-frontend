@@ -3,6 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import mediaUpload from "../../utils/mediaUpload";
 import axios from "axios";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function AddProductPage() {
 
@@ -23,7 +28,7 @@ async function AddProduct() {
       toast.error("Please login to add a product");
       return;
     }
-    
+
     if(images.length <=0){
       toast.error("Please add at least one image");
       return;
@@ -66,33 +71,75 @@ async function AddProduct() {
       }).catch(() => {
         toast.error("Error adding product");
       });
-      
+
     } catch (error) {
       toast.error("Error uploading images");
       return;
     }
-    
+
+
 
 
 
   }
 
 
-  return <div className="w-full h-full flex flex-col items-center justify-center ">
-    <input type="text" placeholder="Product ID" value={productId} onChange={(e) => setProductId(e.target.value)} />
-    <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-    <input type="text" placeholder="Alt Names" value={altNames} onChange={(e) => setAltNames(e.target.value)} />
-    <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-    <input type="file" multiple placeholder="Images" onChange={(e) => setImages(e.target.files)} />
-    <input type="number" placeholder="Labelled Price" value={labelledPrice} onChange={(e) => setLabelledPrice(e.target.value)} />
-    <input type="number" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} />
-    <input type="number" placeholder="Stock" value={stock} onChange={(e) => setStock(e.target.value)} />
-    <div className="w-full flex justify-center items-center flex-row mr-4">
-      <Link to="/admin/products" className="bg-blue-500 text-white p-2 rounded-md">Back</Link>
-      <button onClick={AddProduct} className="bg-green-500 text-white p-2 rounded-md">Add Product</button>
+  return (
+    <div className="flex h-full w-full items-center justify-center overflow-y-auto p-6">
+      <Card className="w-full max-w-lg">
+        <CardHeader>
+          <CardTitle className="font-heading text-xl">Add Product</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="productId">Product ID</Label>
+              <Input id="productId" value={productId} onChange={(e) => setProductId(e.target.value)} />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="name">Name</Label>
+              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="altNames">Alt Names (comma separated)</Label>
+            <Input id="altNames" value={altNames} onChange={(e) => setAltNames(e.target.value)} />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="description">Description</Label>
+            <Textarea id="description" rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="images">Images (max 5)</Label>
+            <Input id="images" type="file" multiple onChange={(e) => setImages(e.target.files)} />
+          </div>
+
+          <div className="grid grid-cols-3 gap-3">
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="labelledPrice">Labelled Price</Label>
+              <Input id="labelledPrice" type="number" value={labelledPrice} onChange={(e) => setLabelledPrice(e.target.value)} />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="price">Price</Label>
+              <Input id="price" type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="stock">Stock</Label>
+              <Input id="stock" type="number" value={stock} onChange={(e) => setStock(e.target.value)} />
+            </div>
+          </div>
+
+          <div className="mt-2 flex justify-end gap-3">
+            <Button variant="outline" asChild>
+              <Link to="/admin/products">Back</Link>
+            </Button>
+            <Button onClick={AddProduct}>Add Product</Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
-
-  </div>;
+  );
 }
-
-
