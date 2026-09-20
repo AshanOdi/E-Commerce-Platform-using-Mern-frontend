@@ -41,7 +41,10 @@ export default function Header() {
             </button>
           </>
         ) : (
-          <Link to="/login" className=" text-[20px] font-boold mx-2">Login</Link>
+          <>
+            <Link to="/login" className=" text-[20px] font-boold mx-2">Login</Link>
+            <Link to="/register" className=" text-[20px] font-boold mx-2">Register</Link>
+          </>
         )}
 
       </div>

@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import HomePage from "./pages/home";
 import LoginPage from "./pages/login";
-import Header from "./components/header";
 import AdminPage from "./pages/adminPage";
 import { Toaster } from "react-hot-toast";
 import RegisterPage from "./pages/register";
@@ -23,7 +22,6 @@ function App() {
       <div>
         <Toaster position="top-right" />
         <Routes path="/*">
-          <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/admin/*" element={<RequireAdmin><AdminPage /></RequireAdmin>} />
