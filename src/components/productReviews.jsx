@@ -130,12 +130,12 @@ export default function ProductReviews({ productId }) {
   }
 
   return (
-    <div className="w-full border-t border-gray-200 mt-10 pt-8">
-      <h2 className="text-xl font-bold text-gray-800 mb-4">Reviews</h2>
+    <div className="w-full border-t border-border mt-10 pt-8">
+      <h2 className="text-xl font-bold text-foreground mb-4">Reviews</h2>
 
-      {status === "loading" && <p className="text-gray-500 text-sm">Loading reviews…</p>}
+      {status === "loading" && <p className="text-muted-foreground text-sm">Loading reviews…</p>}
       {status === "error" && (
-        <p className="text-gray-500 text-sm">Couldn’t load reviews right now.</p>
+        <p className="text-muted-foreground text-sm">Couldn’t load reviews right now.</p>
       )}
 
       {status === "success" && (
@@ -144,12 +144,12 @@ export default function ProductReviews({ productId }) {
           {summary.count > 0 ? (
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
               <div className="flex items-center gap-2">
-                <span className="text-3xl font-bold text-gray-800">
+                <span className="text-3xl font-bold text-foreground">
                   {summary.average.toFixed(1)}
                 </span>
                 <div>
                   <Stars value={Math.round(summary.average)} />
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-muted-foreground">
                     {summary.count} review{summary.count !== 1 ? "s" : ""}
                   </p>
                 </div>
@@ -159,9 +159,9 @@ export default function ProductReviews({ productId }) {
                   const c = summary.distribution[star] || 0;
                   const pct = summary.count ? (c / summary.count) * 100 : 0;
                   return (
-                    <div key={star} className="flex items-center gap-2 text-xs text-gray-500">
+                    <div key={star} className="flex items-center gap-2 text-xs text-muted-foreground">
                       <span className="w-3">{star}</span>
-                      <div className="flex-1 h-2 bg-gray-200 rounded">
+                      <div className="flex-1 h-2 bg-muted rounded">
                         <div
                           className="h-2 bg-yellow-500 rounded"
                           style={{ width: pct + "%" }}
@@ -174,12 +174,12 @@ export default function ProductReviews({ productId }) {
               </div>
             </div>
           ) : (
-            <p className="text-gray-500 text-sm mb-6">No reviews yet.</p>
+            <p className="text-muted-foreground text-sm mb-6">No reviews yet.</p>
           )}
 
           {/* Write a review */}
           {!user && (
-            <p className="text-sm text-gray-600 mb-6">
+            <p className="text-sm text-muted-foreground mb-6">
               <Link to="/login" className="text-primary hover:underline">
                 Log in
               </Link>{" "}
@@ -190,9 +190,9 @@ export default function ProductReviews({ productId }) {
           {user && !myReview && editingId === null && (
             <form
               onSubmit={submitReview}
-              className="bg-white rounded-2xl shadow-md p-5 mb-6 flex flex-col gap-3"
+              className="bg-card rounded-2xl shadow-md p-5 mb-6 flex flex-col gap-3"
             >
-              <span className="text-sm font-medium text-gray-700">Your rating</span>
+              <span className="text-sm font-medium text-foreground">Your rating</span>
               <StarPicker value={rating} onChange={setRating} />
               <textarea
                 value={comment}
@@ -200,12 +200,12 @@ export default function ProductReviews({ productId }) {
                 rows={3}
                 maxLength={1000}
                 placeholder="Share what you think about this product…"
-                className="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                className="border border-border bg-background text-foreground rounded-lg px-3 py-2 text-sm"
               />
               <button
                 type="submit"
                 disabled={submitting}
-                className="self-start bg-primary hover:bg-primary/90 disabled:opacity-50 text-white text-sm font-medium px-5 py-2 rounded-lg"
+                className="self-start bg-primary hover:bg-primary/90 disabled:opacity-50 text-primary-foreground text-sm font-medium px-5 py-2 rounded-lg"
               >
                 {submitting ? "Posting…" : "Post review"}
               </button>
@@ -218,7 +218,7 @@ export default function ProductReviews({ productId }) {
               const mine = user && String(r.userId) === user.id;
               const isEditing = editingId === r._id;
               return (
-                <div key={r._id} className="border-b border-gray-100 pb-4">
+                <div key={r._id} className="border-b border-border pb-4">
                   {isEditing ? (
                     <div className="flex flex-col gap-2">
                       <StarPicker value={rating} onChange={setRating} />
@@ -227,19 +227,19 @@ export default function ProductReviews({ productId }) {
                         onChange={(e) => setComment(e.target.value)}
                         rows={3}
                         maxLength={1000}
-                        className="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                        className="border border-border bg-background text-foreground rounded-lg px-3 py-2 text-sm"
                       />
                       <div className="flex gap-2">
                         <button
                           onClick={() => saveEdit(r._id)}
                           disabled={submitting}
-                          className="bg-primary hover:bg-primary/90 disabled:opacity-50 text-white text-xs px-4 py-1.5 rounded-md"
+                          className="bg-primary hover:bg-primary/90 disabled:opacity-50 text-primary-foreground text-xs px-4 py-1.5 rounded-md"
                         >
                           Save
                         </button>
                         <button
                           onClick={() => setEditingId(null)}
-                          className="text-xs px-4 py-1.5 rounded-md border border-gray-300"
+                          className="text-xs px-4 py-1.5 rounded-md border border-border"
                         >
                           Cancel
                         </button>
@@ -248,18 +248,18 @@ export default function ProductReviews({ productId }) {
                   ) : (
                     <>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-medium text-gray-800">{r.userName}</span>
+                        <span className="font-medium text-foreground">{r.userName}</span>
                         {r.isVerifiedPurchase && (
-                          <span className="text-[11px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+                          <span className="text-[11px] bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400 px-2 py-0.5 rounded-full">
                             Verified Purchase
                           </span>
                         )}
-                        <span className="text-xs text-gray-400">
+                        <span className="text-xs text-muted-foreground">
                           {new Date(r.date).toLocaleDateString()}
                         </span>
                       </div>
                       <Stars value={r.rating} size={14} />
-                      <p className="text-sm text-gray-700 mt-1 whitespace-pre-line">{r.comment}</p>
+                      <p className="text-sm text-foreground mt-1 whitespace-pre-line">{r.comment}</p>
                       {mine && (
                         <div className="flex gap-3 mt-2">
                           <button

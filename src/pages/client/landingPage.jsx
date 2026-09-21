@@ -56,7 +56,7 @@ export default function LandingPage() {
   return (
     <main className="flex w-full flex-col items-center">
       {/* Hero */}
-      <section className="relative w-full overflow-hidden bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50 px-4 py-24 text-center">
+      <section className="relative w-full overflow-hidden bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50 dark:from-pink-950/40 dark:via-background dark:to-purple-950/40 px-4 py-24 text-center">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(219,39,119,0.12),transparent_45%),radial-gradient(circle_at_80%_0%,rgba(168,85,247,0.12),transparent_40%)]"
@@ -64,7 +64,7 @@ export default function LandingPage() {
         <div className="relative">
           <Badge
             variant="secondary"
-            className="mb-4 h-auto whitespace-normal border border-primary/20 bg-white/70 px-3 py-1 text-primary"
+            className="mb-4 h-auto whitespace-normal border border-primary/20 bg-card/70 px-3 py-1 text-primary"
           >
             New in — Spring skincare edit
           </Badge>

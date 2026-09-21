@@ -3,10 +3,23 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { ImageOff } from "lucide-react";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import { useWishlist } from "../../context/WishlistContext";
 import ProductReviews from "../../components/productReviews";
+
+function GalleryImage({ src, alt, className }) {
+  const [failed, setFailed] = useState(false);
+  if (!src || failed) {
+    return (
+      <div className={`flex items-center justify-center bg-muted text-muted-foreground ${className}`}>
+        <ImageOff size={20} strokeWidth={1.5} />
+      </div>
+    );
+  }
+  return <img src={src} alt={alt} onError={() => setFailed(true)} className={className} />;
+}
 
 // "loading" | "success" | "not-found" | "error"
 export default function ProductDetailPage() {
@@ -51,8 +64,8 @@ export default function ProductDetailPage() {
   if (status === "not-found") {
     return (
       <div className="w-full h-full flex flex-col justify-center items-center gap-3">
-        <h1 className="text-2xl font-semibold text-gray-700">Product not found</h1>
-        <p className="text-gray-500">This product may have been removed or is no longer available.</p>
+        <h1 className="text-2xl font-semibold text-foreground">Product not found</h1>
+        <p className="text-muted-foreground">This product may have been removed or is no longer available.</p>
         <Link to="/product" className="text-primary hover:underline">
           Back to all products
         </Link>
@@ -63,8 +76,8 @@ export default function ProductDetailPage() {
   if (status === "error") {
     return (
       <div className="w-full h-full flex flex-col justify-center items-center gap-3">
-        <h1 className="text-2xl font-semibold text-gray-700">Something went wrong</h1>
-        <p className="text-gray-500">Please try again in a moment.</p>
+        <h1 className="text-2xl font-semibold text-foreground">Something went wrong</h1>
+        <p className="text-muted-foreground">Please try again in a moment.</p>
         <Link to="/product" className="text-primary hover:underline">
           Back to all products
         </Link>
@@ -103,30 +116,35 @@ export default function ProductDetailPage() {
       <div className="flex flex-col md:flex-row gap-10">
       {/* Image gallery */}
       <div className="w-full md:w-1/2 flex flex-col items-center">
-        <div className="w-full aspect-square bg-gray-100 rounded-2xl overflow-hidden flex items-center justify-center">
+        <div className="w-full aspect-square bg-muted rounded-2xl overflow-hidden flex items-center justify-center">
           {images.length > 0 ? (
-            <img
+            <GalleryImage
+              key={images[activeImage]}
               src={images[activeImage]}
               alt={product.name}
               className="object-cover w-full h-full"
             />
           ) : (
-            <div className="text-gray-500 text-sm">No Image</div>
+            <div className="text-muted-foreground text-sm">No Image</div>
           )}
         </div>
 
         {images.length > 1 && (
           <div className="w-full flex gap-2 mt-3 overflow-x-auto">
             {images.map((img, index) => (
-              <img
+              <button
                 key={index}
-                src={img}
-                alt={`${product.name} thumbnail ${index + 1}`}
                 onClick={() => setActiveImage(index)}
-                className={`w-16 h-16 object-cover rounded-lg cursor-pointer border-2 flex-shrink-0 ${
+                className={`w-16 h-16 rounded-lg overflow-hidden border-2 flex-shrink-0 ${
                   index === activeImage ? "border-primary" : "border-transparent"
                 }`}
-              />
+              >
+                <GalleryImage
+                  src={img}
+                  alt={`${product.name} thumbnail ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </button>
             ))}
           </div>
         )}
@@ -135,28 +153,28 @@ export default function ProductDetailPage() {
       {/* Details */}
       <div className="w-full md:w-1/2 flex flex-col">
         <div className="flex items-start justify-between gap-4">
-          <h1 className="text-2xl font-bold text-gray-800">{product.name}</h1>
+          <h1 className="text-2xl font-bold text-foreground">{product.name}</h1>
           <button
             onClick={handleToggleWishlist}
             aria-label={isWishlisted(product.productId) ? "Remove from wishlist" : "Add to wishlist"}
-            className="w-10 h-10 flex-shrink-0 rounded-full bg-gray-100 shadow flex items-center justify-center hover:scale-110 transition-transform"
+            className="w-10 h-10 flex-shrink-0 rounded-full bg-muted shadow flex items-center justify-center hover:scale-110 transition-transform"
           >
             {isWishlisted(product.productId) ? (
               <FaHeart className="text-red-500" size={18} />
             ) : (
-              <FaRegHeart className="text-gray-500" size={18} />
+              <FaRegHeart className="text-muted-foreground" size={18} />
             )}
           </button>
         </div>
         {product.altNames && product.altNames.length > 0 && (
-          <p className="text-sm text-gray-400 mt-1">{product.altNames.join(", ")}</p>
+          <p className="text-sm text-muted-foreground mt-1">{product.altNames.join(", ")}</p>
         )}
 
-        <p className="text-gray-600 mt-4">{product.description}</p>
+        <p className="text-muted-foreground mt-4">{product.description}</p>
 
         <div className="mt-6 flex items-center gap-3">
           {hasDiscount && (
-            <span className="text-lg text-gray-400 line-through">
+            <span className="text-lg text-muted-foreground line-through">
               ${product.labelledPrice.toFixed(2)}
             </span>
           )}
@@ -169,18 +187,18 @@ export default function ProductDetailPage() {
 
         {product.isAvailable && (
           <div className="mt-6 flex items-center gap-4">
-            <span className="text-gray-700 font-medium">Quantity</span>
-            <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+            <span className="text-foreground font-medium">Quantity</span>
+            <div className="flex items-center border border-border rounded-lg overflow-hidden">
               <button
                 onClick={() => changeQuantity(-1)}
-                className="px-3 py-1 text-lg hover:bg-gray-100"
+                className="px-3 py-1 text-lg hover:bg-muted"
               >
                 -
               </button>
               <span className="px-4">{quantity}</span>
               <button
                 onClick={() => changeQuantity(1)}
-                className="px-3 py-1 text-lg hover:bg-gray-100"
+                className="px-3 py-1 text-lg hover:bg-muted"
               >
                 +
               </button>
@@ -191,10 +209,10 @@ export default function ProductDetailPage() {
         <button
           onClick={handleAddToCart}
           disabled={!product.isAvailable}
-          className={`mt-8 w-full md:w-auto px-8 py-3 rounded-lg text-white font-medium transition-colors ${
+          className={`mt-8 w-full md:w-auto px-8 py-3 rounded-lg font-medium transition-colors ${
             product.isAvailable
-              ? "bg-primary hover:bg-primary/90"
-              : "bg-gray-400 cursor-not-allowed"
+              ? "bg-primary text-primary-foreground hover:bg-primary/90"
+              : "bg-muted-foreground text-white cursor-not-allowed"
           }`}
         >
           {product.isAvailable ? "Add to Cart" : "Unavailable"}

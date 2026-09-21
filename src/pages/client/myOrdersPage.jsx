@@ -37,8 +37,8 @@ export default function MyOrdersPage() {
   if (status === "error") {
     return (
       <div className="w-full h-full flex flex-col justify-center items-center gap-3">
-        <h1 className="text-2xl font-semibold text-gray-700">Something went wrong</h1>
-        <p className="text-gray-500">Please try again in a moment.</p>
+        <h1 className="text-2xl font-semibold text-foreground">Something went wrong</h1>
+        <p className="text-muted-foreground">Please try again in a moment.</p>
       </div>
     );
   }
@@ -46,7 +46,7 @@ export default function MyOrdersPage() {
   if (orders.length === 0) {
     return (
       <div className="w-full h-full flex flex-col justify-center items-center gap-3">
-        <h1 className="text-2xl font-semibold text-gray-700">You have no orders yet</h1>
+        <h1 className="text-2xl font-semibold text-foreground">You have no orders yet</h1>
         <Link to="/product" className="text-primary hover:underline">
           Start shopping
         </Link>
@@ -56,25 +56,25 @@ export default function MyOrdersPage() {
 
   return (
     <div className="w-full max-w-4xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">My Orders</h1>
+      <h1 className="text-2xl font-bold text-foreground mb-6">My Orders</h1>
 
       <div className="flex flex-col gap-4">
         {orders.map((order) => (
           <Link
             key={order.orderId}
             to={"/my-orders/" + order.orderId}
-            className="flex items-center justify-between bg-white rounded-2xl shadow-md p-5 hover:shadow-lg transition-shadow"
+            className="flex items-center justify-between bg-card rounded-2xl shadow-md p-5 hover:shadow-lg transition-shadow"
           >
             <div>
-              <p className="font-mono font-semibold text-gray-800">{order.orderId}</p>
-              <p className="text-sm text-gray-500">
+              <p className="font-mono font-semibold text-foreground">{order.orderId}</p>
+              <p className="text-sm text-muted-foreground">
                 {new Date(order.date).toLocaleDateString()} · {order.products.length} item
                 {order.products.length !== 1 ? "s" : ""}
               </p>
             </div>
             <div className="text-right">
-              <p className="font-bold text-gray-800">${order.total.toFixed(2)}</p>
-              <p className="text-sm capitalize text-gray-500">{order.status}</p>
+              <p className="font-bold text-foreground">${order.total.toFixed(2)}</p>
+              <p className="text-sm capitalize text-muted-foreground">{order.status}</p>
             </div>
           </Link>
         ))}

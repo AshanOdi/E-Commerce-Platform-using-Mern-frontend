@@ -51,7 +51,7 @@ export default function ProductCard({ product }) {
         <button
           onClick={handleToggleWishlist}
           aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-          className="absolute top-3 right-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow transition-transform hover:scale-110"
+          className="absolute top-3 right-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-card/90 shadow transition-transform hover:scale-110"
         >
           {wishlisted ? (
             <FaHeart className="text-primary" size={16} />

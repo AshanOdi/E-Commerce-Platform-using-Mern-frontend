@@ -36,8 +36,8 @@ export default function ContactPage() {
   if (status === "success") {
     return (
       <main className="w-full max-w-lg mx-auto px-4 py-24 text-center">
-        <h1 className="text-2xl font-bold text-gray-800">Message sent</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-2xl font-bold text-foreground">Message sent</h1>
+        <p className="text-muted-foreground mt-2">
           Thanks for reaching out — we'll get back to you as soon as we can.
         </p>
       </main>
@@ -46,59 +46,59 @@ export default function ContactPage() {
 
   return (
     <main className="w-full max-w-lg mx-auto px-4 py-16">
-      <h1 className="text-3xl font-bold text-gray-800 mb-2">Contact Us</h1>
-      <p className="text-gray-600 mb-8">
+      <h1 className="text-3xl font-bold text-foreground mb-2">Contact Us</h1>
+      <p className="text-muted-foreground mb-8">
         Questions about an order, a product, or anything else — send us a message below.
       </p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
         <label className="flex flex-col gap-1">
-          <span className="text-sm font-medium text-gray-700">Name</span>
+          <span className="text-sm font-medium text-foreground">Name</span>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2"
+            className="border border-border bg-background text-foreground rounded-lg px-3 py-2"
             required
           />
         </label>
 
         <label className="flex flex-col gap-1">
-          <span className="text-sm font-medium text-gray-700">Email</span>
+          <span className="text-sm font-medium text-foreground">Email</span>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2"
+            className="border border-border bg-background text-foreground rounded-lg px-3 py-2"
             required
           />
         </label>
 
         <label className="flex flex-col gap-1">
-          <span className="text-sm font-medium text-gray-700">Subject</span>
+          <span className="text-sm font-medium text-foreground">Subject</span>
           <input
             type="text"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2"
+            className="border border-border bg-background text-foreground rounded-lg px-3 py-2"
             required
           />
         </label>
 
         <label className="flex flex-col gap-1">
-          <span className="text-sm font-medium text-gray-700">Message</span>
+          <span className="text-sm font-medium text-foreground">Message</span>
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             rows={5}
             maxLength={2000}
-            className="border border-gray-300 rounded-lg px-3 py-2"
+            className="border border-border bg-background text-foreground rounded-lg px-3 py-2"
             required
           />
         </label>
 
         {errorMessage && (
-          <p className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+          <p className="text-red-600 text-sm bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-lg px-3 py-2">
             {errorMessage}
           </p>
         )}
@@ -106,7 +106,7 @@ export default function ContactPage() {
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="bg-primary hover:bg-primary/90 disabled:opacity-50 text-white font-medium py-3 rounded-lg"
+          className="bg-primary hover:bg-primary/90 disabled:opacity-50 text-primary-foreground font-medium py-3 rounded-lg"
         >
           {status === "submitting" ? "Sending…" : "Send Message"}
         </button>

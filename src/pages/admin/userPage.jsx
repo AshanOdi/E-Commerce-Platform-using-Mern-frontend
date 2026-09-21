@@ -61,8 +61,8 @@ export default function AdminUsersPage() {
   if (status === "error") {
     return (
       <div className="w-full h-full flex flex-col justify-center items-center gap-2">
-        <h1 className="text-2xl font-semibold text-gray-700">Could not load users</h1>
-        <p className="text-gray-500">Please try again in a moment.</p>
+        <h1 className="text-2xl font-semibold text-foreground">Could not load users</h1>
+        <p className="text-muted-foreground">Please try again in a moment.</p>
       </div>
     );
   }
@@ -100,7 +100,7 @@ export default function AdminUsersPage() {
                     className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${
                       u.role === "admin"
                         ? "bg-primary/10 text-primary"
-                        : "bg-gray-200 text-gray-700"
+                        : "bg-muted text-muted-foreground"
                     }`}
                   >
                     {u.role}
@@ -110,8 +110,8 @@ export default function AdminUsersPage() {
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${
                       u.isBlocked
-                        ? "bg-red-100 text-red-700"
-                        : "bg-green-100 text-green-700"
+                        ? "bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-400"
+                        : "bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400"
                     }`}
                   >
                     {u.isBlocked ? "Blocked" : "Active"}

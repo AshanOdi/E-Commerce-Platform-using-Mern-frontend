@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaRegHeart, FaBars } from "react-icons/fa";
+import { Sun, Moon } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useWishlist } from "../context/WishlistContext";
+import { useTheme } from "../context/ThemeContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -50,6 +52,7 @@ export default function Header() {
   const { cartItemCount } = useCart();
   const { isAuthenticated, user, logout } = useAuth();
   const { products: wishlistProducts } = useWishlist();
+  const { theme, toggleTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const initials = user ? `${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}` : "";
@@ -93,6 +96,15 @@ export default function Header() {
       </Sheet>
 
       <div className="ml-auto flex items-center gap-1.5">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleTheme}
+          aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+        >
+          {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
+        </Button>
+
         {isAuthenticated && (
           <Button variant="ghost" size="icon" asChild className="relative">
             <Link to="/wishlist" aria-label="Wishlist">

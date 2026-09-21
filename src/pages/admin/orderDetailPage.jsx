@@ -68,7 +68,7 @@ export default function AdminOrderDetailPage() {
   if (status === "not-found") {
     return (
       <div className="w-full h-full flex flex-col justify-center items-center gap-2">
-        <h1 className="text-2xl font-semibold text-gray-700">Order not found</h1>
+        <h1 className="text-2xl font-semibold text-foreground">Order not found</h1>
         <Link to="/admin/orders" className="text-primary hover:underline">
           Back to orders
         </Link>
@@ -79,7 +79,7 @@ export default function AdminOrderDetailPage() {
   if (status === "error") {
     return (
       <div className="w-full h-full flex flex-col justify-center items-center gap-2">
-        <h1 className="text-2xl font-semibold text-gray-700">Something went wrong</h1>
+        <h1 className="text-2xl font-semibold text-foreground">Something went wrong</h1>
         <Link to="/admin/orders" className="text-primary hover:underline">
           Back to orders
         </Link>
@@ -98,17 +98,17 @@ export default function AdminOrderDetailPage() {
       <div className="mt-4 max-w-2xl">
         <div className="flex justify-between items-start flex-wrap gap-2">
           <div>
-            <h1 className="text-xl font-bold text-gray-800 font-mono">{order.orderId}</h1>
-            <p className="text-sm text-gray-500">{new Date(order.date).toLocaleString()}</p>
+            <h1 className="text-xl font-bold text-foreground font-mono">{order.orderId}</h1>
+            <p className="text-sm text-muted-foreground">{new Date(order.date).toLocaleString()}</p>
           </div>
           <div className="flex gap-2">
             <span
               className={`px-3 py-1 rounded-full text-sm font-medium ${
                 order.paymentStatus === "paid"
-                  ? "bg-green-100 text-green-700"
+                  ? "bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400"
                   : order.paymentStatus === "failed"
-                  ? "bg-red-100 text-red-700"
-                  : "bg-yellow-100 text-yellow-700"
+                  ? "bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-400"
+                  : "bg-yellow-100 text-yellow-700 dark:bg-yellow-500/15 dark:text-yellow-400"
               }`}
             >
               {order.paymentStatus === "paid"
@@ -127,34 +127,34 @@ export default function AdminOrderDetailPage() {
           </div>
         </div>
 
-        <div className="mt-4 text-sm text-gray-600">
-          <p><span className="font-medium text-gray-800">Customer:</span> {order.name} ({order.email})</p>
-          <p><span className="font-medium text-gray-800">Phone:</span> {order.phone}</p>
-          <p><span className="font-medium text-gray-800">Address:</span> {order.address}</p>
+        <div className="mt-4 text-sm text-muted-foreground">
+          <p><span className="font-medium text-foreground">Customer:</span> {order.name} ({order.email})</p>
+          <p><span className="font-medium text-foreground">Phone:</span> {order.phone}</p>
+          <p><span className="font-medium text-foreground">Address:</span> {order.address}</p>
         </div>
 
-        <div className="border-t border-gray-200 mt-4 pt-4 flex flex-col gap-2">
+        <div className="border-t border-border mt-4 pt-4 flex flex-col gap-2">
           {order.products.map((item, index) => (
             <div key={index} className="flex justify-between text-sm">
-              <span className="text-gray-600">
+              <span className="text-muted-foreground">
                 {item.productInfo.name} × {item.quantity}
               </span>
-              <span className="font-medium text-gray-800">
+              <span className="font-medium text-foreground">
                 ${(item.productInfo.price * item.quantity).toFixed(2)}
               </span>
             </div>
           ))}
         </div>
 
-        <div className="border-t border-gray-200 mt-4 pt-4 flex justify-between font-bold text-gray-800">
+        <div className="border-t border-border mt-4 pt-4 flex justify-between font-bold text-foreground">
           <span>Total</span>
           <span>${order.total.toFixed(2)}</span>
         </div>
 
-        <div className="border-t border-gray-200 mt-6 pt-4">
-          <h2 className="font-semibold text-gray-800 mb-2">Update status</h2>
+        <div className="border-t border-border mt-6 pt-4">
+          <h2 className="font-semibold text-foreground mb-2">Update status</h2>
           {nextOptions.length === 0 ? (
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
               This order is <span className="capitalize font-medium">{order.status}</span> — no further changes.
             </p>
           ) : (
@@ -164,10 +164,10 @@ export default function AdminOrderDetailPage() {
                   key={s}
                   onClick={() => changeStatus(s)}
                   disabled={updating}
-                  className={`px-4 py-2 rounded-lg text-white font-medium capitalize transition-colors disabled:opacity-50 ${
+                  className={`px-4 py-2 rounded-lg font-medium capitalize transition-colors disabled:opacity-50 ${
                     s === "cancelled"
-                      ? "bg-red-600 hover:bg-red-700"
-                      : "bg-primary hover:bg-primary/90"
+                      ? "bg-red-600 text-white hover:bg-red-700"
+                      : "bg-primary text-primary-foreground hover:bg-primary/90"
                   }`}
                 >
                   {s === "cancelled" ? "Cancel order" : "Mark " + s}

@@ -3,6 +3,7 @@ import "./App.css";
 import HomePage from "./pages/home";
 import AdminPage from "./pages/adminPage";
 import { Toaster } from "react-hot-toast";
+import { ThemeProvider } from "./context/ThemeContext";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 import { WishlistProvider } from "./context/WishlistContext";
@@ -10,6 +11,7 @@ import { RequireAdmin } from "./components/ProtectedRoute";
 
 function App() {
   return (
+    <ThemeProvider>
     <CartProvider>
     <BrowserRouter>
       {/* AuthProvider needs useNavigate() (for logout / expired-session
@@ -18,7 +20,16 @@ function App() {
       <AuthProvider>
       <WishlistProvider>
       <div>
-        <Toaster position="top-right" />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            style: {
+              background: "var(--color-card)",
+              color: "var(--color-card-foreground)",
+              border: "1px solid var(--color-border)",
+            },
+          }}
+        />
         <Routes path="/*">
           <Route path="/admin/*" element={<RequireAdmin><AdminPage /></RequireAdmin>} />
           <Route path="/*" element={<HomePage/>} />
@@ -28,6 +39,7 @@ function App() {
       </AuthProvider>
     </BrowserRouter>
     </CartProvider>
+    </ThemeProvider>
   );
 }
 

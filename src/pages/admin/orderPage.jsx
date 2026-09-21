@@ -14,14 +14,14 @@ import {
 // detail page stay visually consistent.
 export function statusBadgeClass(status) {
   const map = {
-    pending: "bg-gray-200 text-gray-700",
+    pending: "bg-muted text-muted-foreground",
     confirmed: "bg-primary/10 text-primary",
-    processing: "bg-indigo-100 text-indigo-700",
-    shipped: "bg-orange-100 text-orange-700",
-    delivered: "bg-green-100 text-green-700",
-    cancelled: "bg-red-100 text-red-700",
+    processing: "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-400",
+    shipped: "bg-orange-100 text-orange-700 dark:bg-orange-500/15 dark:text-orange-400",
+    delivered: "bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400",
+    cancelled: "bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-400",
   };
-  return map[status] || "bg-gray-200 text-gray-700";
+  return map[status] || "bg-muted text-muted-foreground";
 }
 
 // "loading" | "success" | "error"
@@ -53,8 +53,8 @@ export default function AdminOrdersPage() {
   if (status === "error") {
     return (
       <div className="w-full h-full flex flex-col justify-center items-center gap-2">
-        <h1 className="text-2xl font-semibold text-gray-700">Could not load orders</h1>
-        <p className="text-gray-500">Please try again in a moment.</p>
+        <h1 className="text-2xl font-semibold text-foreground">Could not load orders</h1>
+        <p className="text-muted-foreground">Please try again in a moment.</p>
       </div>
     );
   }

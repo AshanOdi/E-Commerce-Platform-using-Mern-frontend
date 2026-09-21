@@ -1,11 +1,14 @@
 import { Link, NavLink, Routes, Route, Navigate } from "react-router-dom";
 import { FaBoxOpen, FaUsers, FaClipboardList, FaStar, FaArrowLeft } from "react-icons/fa";
+import { Sun, Moon } from "lucide-react";
 import AdminProductPage from "./admin/productPage";
 import AddProductPage from "./admin/addProductPage";
 import EditProductPage from "./admin/editProductPage";
 import AdminOrdersPage from "./admin/orderPage";
 import AdminOrderDetailPage from "./admin/orderDetailPage";
 import AdminUsersPage from "./admin/userPage";
+import { useTheme } from "../context/ThemeContext";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -16,12 +19,23 @@ const navItems = [
 ];
 
 export default function AdminPage() {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <div className="flex h-screen w-full flex-row bg-muted/30">
       <div className="flex h-screen w-64 shrink-0 flex-col border-r bg-background">
         <div className="flex h-16 items-center gap-2 border-b px-5">
           <img src="/logo-icon.png" alt="Store logo" className="h-8 w-8 rounded-full object-cover" />
           <span className="font-heading text-sm font-semibold text-foreground">Admin</span>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="ml-auto"
+            onClick={toggleTheme}
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
+          </Button>
         </div>
 
         <nav className="flex flex-1 flex-col gap-1 p-3">

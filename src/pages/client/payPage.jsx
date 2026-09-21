@@ -72,7 +72,7 @@ export default function PayPage() {
     }
   }
 
-  const box = "w-full max-w-md mx-auto mt-16 bg-white rounded-2xl shadow-md p-8 text-center";
+  const box = "w-full max-w-md mx-auto mt-16 bg-card rounded-2xl shadow-md p-8 text-center";
 
   if (phase === "loading") {
     return (
@@ -85,7 +85,7 @@ export default function PayPage() {
   if (phase === "notfound") {
     return (
       <div className={box}>
-        <h1 className="text-xl font-semibold text-gray-800">Payment not found</h1>
+        <h1 className="text-xl font-semibold text-foreground">Payment not found</h1>
         <Link to="/product" className="text-primary hover:underline mt-3 inline-block">
           Back to shop
         </Link>
@@ -96,8 +96,8 @@ export default function PayPage() {
   if (phase === "error") {
     return (
       <div className={box}>
-        <h1 className="text-xl font-semibold text-gray-800">Something went wrong</h1>
-        <p className="text-gray-500 mt-1">Please try again in a moment.</p>
+        <h1 className="text-xl font-semibold text-foreground">Something went wrong</h1>
+        <p className="text-muted-foreground mt-1">Please try again in a moment.</p>
       </div>
     );
   }
@@ -105,8 +105,8 @@ export default function PayPage() {
   if (phase === "succeeded") {
     return (
       <div className={box}>
-        <h1 className="text-2xl font-bold text-green-700">Payment successful</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-2xl font-bold text-green-700 dark:text-green-400">Payment successful</h1>
+        <p className="text-muted-foreground mt-2">
           Order <span className="font-mono font-semibold">{orderId}</span> is confirmed.
         </p>
         <div className="flex gap-4 justify-center mt-4">
@@ -124,8 +124,8 @@ export default function PayPage() {
   if (phase === "failed") {
     return (
       <div className={box}>
-        <h1 className="text-2xl font-bold text-red-700">Payment failed</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-2xl font-bold text-red-700 dark:text-red-400">Payment failed</h1>
+        <p className="text-muted-foreground mt-2">
           Order <span className="font-mono font-semibold">{orderId}</span> was cancelled and the
           items returned to stock.
         </p>
@@ -139,21 +139,21 @@ export default function PayPage() {
   // ready | processing
   return (
     <div className={box}>
-      <p className="text-sm text-gray-500">Amount due</p>
-      <p className="text-3xl font-bold text-gray-800 mt-1">
-        {amount.toLocaleString()} <span className="text-lg font-normal text-gray-500">LKR</span>
+      <p className="text-sm text-muted-foreground">Amount due</p>
+      <p className="text-3xl font-bold text-foreground mt-1">
+        {amount.toLocaleString()} <span className="text-lg font-normal text-muted-foreground">LKR</span>
       </p>
-      <p className="text-xs text-gray-400 mt-3">
+      <p className="text-xs text-muted-foreground mt-3">
         Mock gateway — no card details are collected or stored.
       </p>
 
       {phase === "processing" ? (
-        <p className="mt-6 text-gray-600">Processing payment…</p>
+        <p className="mt-6 text-muted-foreground">Processing payment…</p>
       ) : (
         <div className="flex flex-col gap-3 mt-6">
           <button
             onClick={() => pay("success")}
-            className="bg-primary hover:bg-primary/90 text-white font-medium py-3 rounded-lg"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 rounded-lg"
           >
             Pay Now
           </button>

@@ -20,8 +20,8 @@ export default function WishlistPage() {
   if (products.length === 0) {
     return (
       <div className="w-full h-full flex flex-col justify-center items-center gap-3">
-        <h1 className="text-2xl font-semibold text-gray-700">Your wishlist is empty</h1>
-        <p className="text-gray-500">Tap the heart on any product to save it here.</p>
+        <h1 className="text-2xl font-semibold text-foreground">Your wishlist is empty</h1>
+        <p className="text-muted-foreground">Tap the heart on any product to save it here.</p>
         <Link to="/product" className="text-primary hover:underline">
           Browse products
         </Link>
@@ -31,7 +31,7 @@ export default function WishlistPage() {
 
   return (
     <div className="w-full max-w-4xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">My Wishlist</h1>
+      <h1 className="text-2xl font-bold text-foreground mb-6">My Wishlist</h1>
 
       <div className="flex flex-col gap-4">
         {products.map((product) => {
@@ -39,13 +39,13 @@ export default function WishlistPage() {
           return (
             <div
               key={product.productId}
-              className={`flex items-center gap-4 bg-white rounded-2xl shadow-md p-4 ${
+              className={`flex items-center gap-4 bg-card rounded-2xl shadow-md p-4 ${
                 unavailable ? "opacity-70" : ""
               }`}
             >
               <Link
                 to={"/product/" + product.productId}
-                className="w-20 h-20 bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0"
+                className="w-20 h-20 bg-muted rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0"
               >
                 {product.images && product.images.length > 0 ? (
                   <img
@@ -54,15 +54,15 @@ export default function WishlistPage() {
                     className={`object-cover w-full h-full ${unavailable ? "grayscale" : ""}`}
                   />
                 ) : (
-                  <span className="text-gray-400 text-xs">No Image</span>
+                  <span className="text-muted-foreground text-xs">No Image</span>
                 )}
               </Link>
 
               <div className="flex-1 min-w-0">
-                <Link to={"/product/" + product.productId} className="font-semibold text-gray-800 truncate hover:underline">
+                <Link to={"/product/" + product.productId} className="font-semibold text-foreground truncate hover:underline">
                   {product.name}
                 </Link>
-                <p className={`text-sm mt-1 ${unavailable ? "text-red-600 font-medium" : "text-gray-500"}`}>
+                <p className={`text-sm mt-1 ${unavailable ? "text-red-600 font-medium" : "text-muted-foreground"}`}>
                   {unavailable ? "No longer available" : `$${product.price.toFixed(2)}`}
                 </p>
               </div>
@@ -70,8 +70,10 @@ export default function WishlistPage() {
               <button
                 onClick={() => handleAddToCart(product)}
                 disabled={unavailable}
-                className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors ${
-                  unavailable ? "bg-gray-400 cursor-not-allowed" : "bg-primary hover:bg-primary/90"
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  unavailable
+                    ? "bg-muted-foreground text-white cursor-not-allowed"
+                    : "bg-primary text-primary-foreground hover:bg-primary/90"
                 }`}
               >
                 Add to Cart

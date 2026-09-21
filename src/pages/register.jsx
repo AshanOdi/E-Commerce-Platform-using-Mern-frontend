@@ -49,7 +49,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex w-full flex-1 items-center justify-center bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50 px-4 py-12">
+    <div className="flex w-full flex-1 items-center justify-center bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50 dark:from-pink-950/40 dark:via-background dark:to-purple-950/40 px-4 py-12">
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="text-center">
           <img
