@@ -49,9 +49,8 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen w-full flex-row items-center justify-center bg-[url('/loginpage.jpg')] bg-cover bg-center py-10">
-      <div className="hidden h-full w-1/2 md:block" />
-      <Card className="mx-4 w-full max-w-md bg-white/80 shadow-2xl backdrop-blur-md">
+    <div className="flex w-full flex-1 items-center justify-center bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50 px-4 py-12">
+      <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="text-center">
           <img
             src="/logo-icon.png"

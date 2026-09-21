@@ -1,5 +1,7 @@
 import Header from "../components/header";
 import {Routes , Route} from "react-router-dom";
+import LoginPage from "./login";
+import RegisterPage from "./register";
 import ProductPage from "./client/productPage";
 import ProductDetailPage from "./client/productDetailPage";
 import CartPage from "./client/cartPage";
@@ -22,6 +24,8 @@ export default function HomePage() {
       <div className="flex h-[calc(100vh-4rem)] w-full flex-col items-center">
         <Routes path="/*">
           <Route path="/" element={<LandingPage/>} />
+          <Route path="/login" element={<LoginPage/>} />
+          <Route path="/register" element={<RegisterPage/>} />
           <Route path="/product" element={<ProductPage/>} />
           <Route path="/product/:productId" element={<ProductDetailPage/>} />
           {/* Cart works for guests too (Phase 2 design decision) — not gated */}
