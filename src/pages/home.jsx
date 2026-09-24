@@ -1,4 +1,5 @@
 import Header from "../components/header";
+import Footer from "../components/footer";
 import {Routes , Route} from "react-router-dom";
 import LoginPage from "./login";
 import RegisterPage from "./register";
@@ -21,7 +22,10 @@ export default function HomePage() {
   return (
     <div className="flex min-h-screen w-full flex-col items-center">
       <Header />
-      <div className="flex h-[calc(100vh-4rem)] w-full flex-col items-center">
+      {/* min-h (not a fixed h) so short pages still fill the viewport below
+          the header, but taller pages can grow naturally instead of the
+          Footer overlapping their tail end. */}
+      <div className="flex min-h-[calc(100vh-4rem)] w-full flex-col items-center">
         <Routes path="/*">
           <Route path="/" element={<LandingPage/>} />
           <Route path="/login" element={<LoginPage/>} />
@@ -43,7 +47,7 @@ export default function HomePage() {
           
         </Routes>
       </div>
-
+      <Footer />
     </div>
   );
 }
