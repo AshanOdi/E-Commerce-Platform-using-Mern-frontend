@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import AuthSidePanel from "../components/authSidePanel";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -45,56 +46,59 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex w-full flex-1 items-center justify-center bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50 dark:from-pink-950/40 dark:via-background dark:to-purple-950/40 px-4 py-12">
-      <Card className="w-full max-w-md shadow-xl">
-        <CardHeader className="text-center">
-          <img
-            src="/logo-icon.png"
-            alt="Store logo"
-            className="mx-auto mb-2 h-16 w-16 rounded-full object-cover"
-          />
-          <CardTitle className="font-heading text-2xl">Welcome back</CardTitle>
-          <CardDescription>Log in to continue shopping</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-                type="email"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
+    <div className="flex w-full flex-1">
+      <AuthSidePanel />
+      <div className="flex w-full flex-1 items-center justify-center bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50 dark:from-pink-950/40 dark:via-background dark:to-purple-950/40 px-4 py-12">
+        <Card className="w-full max-w-md shadow-xl">
+          <CardHeader className="text-center">
+            <img
+              src="/logo-icon.png"
+              alt="Store logo"
+              className="mx-auto mb-2 h-16 w-16 rounded-full object-cover"
+            />
+            <CardTitle className="font-heading text-2xl">Welcome back</CardTitle>
+            <CardDescription>Log in to continue shopping</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className="flex flex-col gap-4">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                  type="email"
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
 
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                onChange={(e) => setPw(e.target.value)}
-                value={pw}
-                type="password"
-                placeholder="••••••••"
-                required
-              />
-            </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  onChange={(e) => setPw(e.target.value)}
+                  value={pw}
+                  type="password"
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
 
-            <Button type="submit" disabled={submitting} className="mt-2 h-11">
-              {submitting ? "Logging in…" : "Log In"}
-            </Button>
-          </form>
+              <Button type="submit" disabled={submitting} className="mt-2 h-11">
+                {submitting ? "Logging in…" : "Log In"}
+              </Button>
+            </form>
 
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            Don't have an account?{" "}
-            <Link to="/register" className="font-medium text-primary hover:underline">
-              Register
-            </Link>
-          </p>
-        </CardContent>
-      </Card>
+            <p className="mt-6 text-center text-sm text-muted-foreground">
+              Don't have an account?{" "}
+              <Link to="/register" className="font-medium text-primary hover:underline">
+                Register
+              </Link>
+            </p>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
