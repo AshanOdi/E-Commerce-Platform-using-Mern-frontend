@@ -22,8 +22,11 @@ export default function AuthSidePanel() {
       <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
 
       <div className="relative flex items-center gap-2">
-        <img src="/logo-icon.png" alt="" className="h-9 w-9 rounded-full object-cover" />
-        <span className="font-heading text-lg font-semibold">Skincare &amp; Beauty Shop</span>
+        {/* brightness-0 invert forces the logo's own pink fill to solid
+            white -- its natural pink would otherwise have poor contrast
+            against this panel's own pink/purple gradient background. */}
+        <img src="/logo.svg" alt="" className="h-8 w-auto object-contain brightness-0 invert" />
+        <span className="font-heading text-lg font-semibold">POP Cosmetics</span>
       </div>
 
       <div className="relative">

@@ -12,8 +12,8 @@ export default function Footer() {
     <footer className="mt-auto w-full border-t bg-background">
       <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-4 px-4 py-8 text-sm text-muted-foreground md:flex-row md:justify-between md:px-8">
         <div className="flex items-center gap-2">
-          <img src="/logo-icon.png" alt="Store logo" className="h-6 w-6 rounded-full object-cover" />
-          <span className="font-heading font-semibold text-foreground">Skincare &amp; Beauty Shop</span>
+          <img src="/logo.svg" alt="POP Cosmetics" className="h-6 w-auto object-contain" />
+          <span className="font-heading font-semibold text-foreground">POP Cosmetics</span>
         </div>
 
         <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
@@ -24,7 +24,7 @@ export default function Footer() {
           ))}
         </nav>
 
-        <p>&copy; {new Date().getFullYear()} Skincare &amp; Beauty Shop. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} POP Cosmetics. All rights reserved.</p>
       </div>
     </footer>
   );

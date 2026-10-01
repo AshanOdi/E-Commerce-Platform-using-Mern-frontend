@@ -1,4 +1,4 @@
-# Skincare & Beauty Shop — Frontend
+# POP Cosmetics — Frontend
 
 React (Vite) storefront for a full-featured MERN e-commerce platform: product browsing/search, cart, checkout, order history, reviews, wishlist, an AI shopping concierge, and a full admin dashboard.
 

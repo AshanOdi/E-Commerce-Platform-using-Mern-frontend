@@ -17,7 +17,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -38,7 +44,7 @@ function NavItem({ to, label, end, onNavigate, className }) {
         cn(
           "px-3 py-2 text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground",
           isActive && "text-primary",
-          className
+          className,
         )
       }
     >
@@ -55,14 +61,16 @@ export default function Header() {
   const { theme, toggleTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const initials = user ? `${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}` : "";
+  const initials = user
+    ? `${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}`
+    : "";
 
   return (
     <header className="sticky top-0 z-40 flex h-16 w-full items-center gap-2 border-b bg-background/80 px-4 backdrop-blur supports-backdrop-filter:bg-background/60 md:px-8">
       <img
-        src="/logo-icon.png"
-        alt="Store logo"
-        className="h-11 w-11 shrink-0 cursor-pointer rounded-full object-cover"
+        src="/logo.svg"
+        alt="POP Cosmetics"
+        className="h-20 w-auto shrink-0 cursor-pointer object-contain"
         onClick={() => navigate("/")}
       />
 
@@ -74,7 +82,12 @@ export default function Header() {
 
       <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="ml-1 md:hidden" aria-label="Open menu">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="ml-1 md:hidden"
+            aria-label="Open menu"
+          >
             <FaBars size={18} />
           </Button>
         </SheetTrigger>
@@ -100,7 +113,9 @@ export default function Header() {
           variant="ghost"
           size="icon"
           onClick={toggleTheme}
-          aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+          aria-label={
+            theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+          }
         >
           {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
         </Button>

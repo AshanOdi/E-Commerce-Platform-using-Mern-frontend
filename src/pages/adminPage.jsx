@@ -25,7 +25,7 @@ export default function AdminPage() {
     <div className="flex h-screen w-full flex-row bg-muted/30">
       <div className="flex h-screen w-64 shrink-0 flex-col border-r bg-background">
         <div className="flex h-16 items-center gap-2 border-b px-5">
-          <img src="/logo-icon.png" alt="Store logo" className="h-8 w-8 rounded-full object-cover" />
+          <img src="/logo.svg" alt="POP Cosmetics" className="h-7 w-auto object-contain" />
           <span className="font-heading text-sm font-semibold text-foreground">Admin</span>
           <Button
             variant="ghost"

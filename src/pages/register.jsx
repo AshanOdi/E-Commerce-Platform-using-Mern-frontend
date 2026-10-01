@@ -56,9 +56,9 @@ export default function RegisterPage() {
         <Card className="w-full max-w-md shadow-xl">
           <CardHeader className="text-center">
             <img
-              src="/logo-icon.png"
-              alt="Store logo"
-              className="mx-auto mb-2 h-16 w-16 rounded-full object-cover"
+              src="/logo.svg"
+              alt="POP Cosmetics"
+              className="mx-auto mb-2 h-12 w-auto object-contain"
             />
             <CardTitle className="font-heading text-2xl">Create your account</CardTitle>
             <CardDescription>Join us for personalized skincare picks</CardDescription>
